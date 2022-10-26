@@ -1,4 +1,5 @@
 import { getFont } from './font.js';
+import { updateRegisters} from './debug.js';
 
 const CPU = {
     stack: new Uint16Array(16),
@@ -17,13 +18,13 @@ const c = document.getElementById("canvas");
 const ctx = c.getContext("2d");
 ctx.fillStyle = "#d3d3d3";
 ctx.strokeStyle = "#d3d3d3";
+c.height = c.width/2;
 const pLength = c.width / 64;
 
 let f = getFont();
 for(let i = 0; i < f.length; i++) {
     CPU.memory[i + 0x050] = f[i];
 }
-
 
 const loop = () => {
 
@@ -39,6 +40,7 @@ const loop = () => {
     }
 
     show();
+    updateRegisters(CPU.registers);
 };
 
 const getInstruction = () => {
@@ -154,7 +156,7 @@ const draw = (X, Y, N) => {
                 let displayX = x + j;
                 let displayY = y + i;
 
-                console.log(`x coord = ${x} + ${j}   |   y coord = ${y} + ${i}}`)
+                //console.log(`x coord = ${x} + ${j}   |   y coord = ${y} + ${i}}`)
                 if(displayY < 32) {
                     let pixel = (64*displayY) + displayX;
                     if(display[pixel]) {
