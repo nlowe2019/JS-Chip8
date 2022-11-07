@@ -8,24 +8,28 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">        <link href="http://fonts.cdnfonts.com/css/arcade-classic" rel="stylesheet">
+
+        <script type="module" src="./CHIP8.js"></script>
         <script type="module" src="./font.js"></script>
         <script type="module" src="./debug.js"></script>
+        <script type="module" src="./input.js"></script>
         <script src="jquery-3.6.1.min.js"></script>
 
         <style>
             * {
-                border: 1px;
+                /*border: 1px;
                 border-style: solid;
-                border-color: black;
-                color: gainsboro;
+                border-color: black;*/
+                font-family: 'Lucida Console';
+                margin-top: auto;
             }
 
             body {
                 background-color: black;
             }
             #canvas {
-                border: 4px;
-                border-radius: 5px;
+                border: 3px;
+                border-radius: 3px;
                 border-style: solid;
                 border-color: #d3d3d3;
                 padding: 0;
@@ -33,9 +37,9 @@
                 width: 100%;
                 aspect-ratio: 2/1;
             }
-            .registers {
-                border: 4px; 
-                border-radius: 5px; 
+            .box {
+                border: 3px; 
+                border-radius: 3px; 
                 border-style: solid;
                 color: #d0d0d0;
                 background-color: #131313;
@@ -46,21 +50,28 @@
                 width: auto;
                 text-align: center;
             }
+            #log {
+                height: 40vh; 
+                width: 96%; 
+                background-color: black;
+                font-size:small; 
+                color: rgb(50, 255, 0);
+            }
         </style>
 
     </head>
 
     <body>
-        <div class="container bg-dark" style="height:100vh">
+        <div class="container bg-dark mb-2" style="min-height:100vh;">
             <div class="row my-2 border-top border-bottom justify-content-center">
-                <h1 class="my-auto" style="font-family: 'ArcadeClassic';font-size: 48px;">CHIP-8</h1>
+                <h1 class="my-auto" style="font-family: 'ArcadeClassic';font-size: 48px;color: #d0d0d0;">CHIP-8</h1>
             </div>
             <div id="cvs_container" class="row">
-                <div class="col-12 col-sm-3 col-lg-2 order-2 order-sm-1 mb-3">
-                    <div id="reghead" class="registers mb-2 text-center justify-content-center">
-                        <h5>Registers</h5>
+                <div class="col-3 col-lg-2 mb-3">
+                    <div id="reghead" class="box mb-2 text-center justify-content-center" >
+                        <h5 class="my-auto" style="font-size: medium">Registers</h5>
                     </div>
-                    <div id="reg" class="registers" style="overflow-y: scroll; overflow-x: hidden;">
+                    <div id="reg" class="pt-1 box" style="overflow-y: scroll; overflow-x: hidden;">
                         <div class="row lol">
                             <div class="col-6 border-right">V0</div><div id="V0" class="col-6">0</div>
                         </div>
@@ -92,42 +103,66 @@
                             <div class="col-6 border-right">V9</div><div id="V9" class="col-6">0</div>
                         </div>
                         <div class="row">
-                            <div class="col-6 border-right">VA</div><div id="VA" class="col-6">0</div>
+                            <div class="col-6 border-right">VA</div><div id="Va" class="col-6">0</div>
                         </div>
                         <div class="row">
-                            <div class="col-6 border-right">VB</div><div id="VB" class="col-6">0</div>
+                            <div class="col-6 border-right">VB</div><div id="Vb" class="col-6">0</div>
                         </div>
                         <div class="row">
-                            <div class="col-6 border-right">VC</div><div id="VC" class="col-6">0</div>
+                            <div class="col-6 border-right">VC</div><div id="Vc" class="col-6">0</div>
                         </div>
                         <div class="row">
-                            <div class="col-6 border-right">VD</div><div id="VD" class="col-6">0</div>
+                            <div class="col-6 border-right">VD</div><div id="Vd" class="col-6">0</div>
                         </div>
                         <div class="row">
-                            <div class="col-6 border-right">VE</div><div id="VE" class="col-6">0</div>
+                            <div class="col-6 border-right">VE</div><div id="Ve" class="col-6">0</div>
                         </div>
                         <div class="row">
-                            <div class="col-6 border-right">VF</div><div id="VF" class="col-6">0</div>
+                            <div class="col-6 border-right">VF</div><div id="Vf" class="col-6">0</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-6 border-right">I</div><div id="I" class="col-6">0</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 border-right">Delay</div><div id="Delay" class="col-6">0</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 border-right">Sound</div><div id="Sound" class="col-6">0</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-9 col-lg-10 order-1 order-sm-2 mb-3" style="height:100%">
+                <div class="col-9 col-lg-10 mb-3" style="height:100%">
                     <canvas id="canvas" width="1024px">
                         Your browser does not support the HTML canvas tag.
                     </canvas>
                     <script type="module" src="main.js" defer></script>
-                    <script>
-                        const resizeRegisters = () => {
-                            let cvs_ht = $('#canvas').height();
-                            let reg_ht = cvs_ht - 16 - parseInt($('#reghead').height());
-                            $('#reg').height(reg_ht);
-                            $('#cvs_container').height(cvs_ht + 10);
-                        }
-                        resizeRegisters();
-                        $( window ).resize(resizeRegisters);
-                    </script>
                 </div>
             </div>
+            <div id="lower">
+                <div class="row mt-3 justify-content-evenly">
+                    <div id="pc" class="box col-auto">PC: 0x200</div>
+                    <div id="opcode" class="box col-auto">Opcode: 0x0000</div>
+                    <div id="instr" class="box col-5 overflow-hidden">Function: null</div>
+                </div>
+                <div class="row mt-3 justify-content-center">
+                    <div id="log" class="" style="overflow: scroll;">
+                        
+                    </div>
+                </div>
+            </div>
+            <div id="footer" class="text-center" style="color: #d0d0d0;height: 10vh">
+                <p class="my-auto">https://github.com/nlowe2019</p>
+            </div>
         </div>
+        <script>
+            const resizeRegisters = () => {
+                let cvs_ht = $('#canvas').height();
+                let reg_ht = cvs_ht - 20 - parseInt($('#reghead').height());
+                $('#reg').height(reg_ht);
+                $('#cvs_container').height(cvs_ht + 10);
+            }
+            resizeRegisters();
+            $( window ).resize(resizeRegisters);
+        </script>
     </body>
 </html>
