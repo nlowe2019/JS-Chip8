@@ -20,6 +20,7 @@
                 /*border: 1px;
                 border-style: solid;
                 border-color: black;*/
+                color: rgb(50, 255, 0);
                 font-family: 'Lucida Console';
                 margin-top: auto;
             }
@@ -31,7 +32,7 @@
                 border: 3px;
                 border-radius: 3px;
                 border-style: solid;
-                border-color: #d3d3d3;
+                border-color: rgb(50, 255, 0);
                 padding: 0;
                 margin: 0;
                 width: 100%;
@@ -41,8 +42,8 @@
                 border: 3px; 
                 border-radius: 3px; 
                 border-style: solid;
-                color: #d0d0d0;
-                background-color: #131313;
+                color: rgb(50, 255, 0);
+                background-color: #000000;
             }
             #reg > .row {
                 justify-content: center;
@@ -62,9 +63,9 @@
     </head>
 
     <body>
-        <div class="container bg-dark mb-2" style="min-height:100vh;">
-            <div class="row my-2 border-top border-bottom justify-content-center">
-                <h1 class="my-auto" style="font-family: 'ArcadeClassic';font-size: 48px;color: #d0d0d0;">CHIP-8</h1>
+        <div class="container mb-2" style="min-height:100vh;">
+            <div class="row my-2 justify-content-center">
+                <h1 class="my-auto" style="font-family: 'ArcadeClassic';font-size: 48px;color: rgb(50, 255, 0);">CHIP-8</h1>
             </div>
             <div id="cvs_container" class="row">
                 <div class="col-3 col-lg-2 mb-3">
@@ -138,26 +139,26 @@
                     <script type="module" src="main.js" defer></script>
                 </div>
             </div>
-            <div id="lower">
+            <div id="lower" class="">
                 <div class="row mt-3 justify-content-evenly">
                     <div id="pc" class="box col-auto">PC: 0x200</div>
                     <div id="opcode" class="box col-auto">Opcode: 0x0000</div>
                     <div id="instr" class="box col-5 overflow-hidden">Function: null</div>
                 </div>
-                <div class="row mt-3 justify-content-center">
+                <div class="box row mt-4 mx-auto justify-content-center">
                     <div id="log" class="" style="overflow: scroll;">
                         
                     </div>
                 </div>
             </div>
-            <div id="footer" class="text-center" style="color: #d0d0d0;height: 10vh">
+            <div id="footer" class="text-center" style="color: rgb(50, 255, 0);height: 10vh">
                 <p class="my-auto">https://github.com/nlowe2019</p>
             </div>
         </div>
         <script>
             const resizeRegisters = () => {
                 let cvs_ht = $('#canvas').height();
-                let reg_ht = cvs_ht - 20 - parseInt($('#reghead').height());
+                let reg_ht = cvs_ht - 18 - parseInt($('#reghead').height());
                 $('#reg').height(reg_ht);
                 $('#cvs_container').height(cvs_ht + 10);
             }

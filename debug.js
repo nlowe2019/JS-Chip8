@@ -17,7 +17,7 @@ export const updateRegisters = (registers, I, delay, sound) => {
 export const updateLastInstr = (pc, opcode, instr) => {
     pc -= 2;
     document.getElementById("pc").innerHTML = "PC: 0x" + ('0000' + (pc).toString(16)).substr(-4);
-    document.getElementById("instr").innerHTML = "Function: " + instr;
+    document.getElementById("instr").innerHTML = instr;
     document.getElementById("opcode").innerHTML = "Opcode: 0x" + ('0000' + opcode.toString(16)).substr(-4);
     updateLog(pc, opcode, instr)
 }

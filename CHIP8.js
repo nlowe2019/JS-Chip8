@@ -10,7 +10,7 @@ export const CPU = {
     soundTimer: 0,
 
     // Configurable
-    cosmac: true,
+    cosmac: !true,
 
     getDelay: function () {
         return this.delayTimer
@@ -23,7 +23,7 @@ export const CPU = {
     },
     getRegisters: function () {
         return this.registers
-    }
+    },
 };
 
 export const getInstruction = () => {
@@ -46,8 +46,7 @@ export const decodeInstruction = (op, display) => {
         case 0:
             if(N === 0xE) {  // Return Subroutine
                 instruction = returnSub()
-            }
-            if (N === 0x0) { // Clear Screen
+            } else if (Y === 0xE) { // Clear Screen
                 instruction = clearScreen(display)
             }
             break;
@@ -96,12 +95,14 @@ export const decodeInstruction = (op, display) => {
                     break;
                 case 6: // Shift right
                     instruction = VXshiftL(X, Y)
+                    console.log("SHIFT L")
                     break;
                 case 7: // Subtract (y - x)
                     instruction = VYsubVX(X, Y)
                     break;
                 case 0xE: // Shift left
                     instruction = VXshiftR(X, Y)
+                    console.log("SHIFT R")
                     break;
             }
             break;
@@ -160,7 +161,7 @@ export const decodeInstruction = (op, display) => {
                     instruction = store(X)
                     break;
                 case 0x65: // Load
-                    instruction = load()
+                    instruction = load(X)
                     break;
             }
             break;
@@ -303,8 +304,11 @@ const VXshiftR = (x, y) => {
     if(CPU.cosmac) {
         CPU.registers[x] = CPU.registers[y];
     }
-    CPU.registers[0xf] = parseInt(CPU.registers[x].toString(2).slice(-1));
-    CPU.registers[x] >> 1
+    console.log("BEFORE: " + CPU.registers[x].toString(2))
+    CPU.registers[0xf] = CPU.registers[x] & 0x1
+    CPU.registers[x] = CPU.registers[x] >> 1
+    console.log("AFTER: " + CPU.registers[x].toString(2))
+    console.log("VF: " + CPU.registers[0xF].toString(2))
     return 'Shift Right'
 }
 
@@ -312,8 +316,11 @@ const VXshiftL = (x, y) => {
     if(CPU.cosmac) {
         CPU.registers[x] = CPU.registers[y];
     }
-    CPU.registers[0xf] = parseInt(CPU.registers[x].toString(2)[0]);
-    CPU.registers[x] << 1
+    console.log("BEFORE: " + CPU.registers[x].toString(2))
+    CPU.registers[0xf] = (0x80 & CPU.registers[x]) >> 7
+    CPU.registers[x] = CPU.registers[x] << 1
+    console.log("AFTER: " + CPU.registers[x].toString(2))
+    console.log("VF: " + CPU.registers[0xF].toString(2))
     return 'Shift Left'
 }
 
@@ -344,13 +351,12 @@ const random = (x, op) => {
     return 'Random'
 }
 
-//third = 9
 const skipIfKey = (x) => {
     let key = getKey(CPU.registers[x])
     CPU.pc += (keyActive[key] ? 2 : 0)
     return 'Skip if key active'
 }
-//third = A
+
 const skipIfNotKey = (x) => {
     let key = getKey(CPU.registers[x])
     CPU.pc += (keyActive[key] ? 0 : 2)
@@ -373,10 +379,10 @@ const setSound2VX = (x) => {
 }
 
 const addIndex = (x) => {
-    if(CPU.I + CPU.registers[x] > 0xFFF) {
+    if(!CPU.cosmac && CPU.I + CPU.registers[x] > 0xFFF) {
         CPU.registers[0xF] = 1
     }
-    CPU.I += CPU.registers[x]
+    CPU.I = CPU.I + CPU.registers[x]
     return 'Index + VX'
 }
 
@@ -410,10 +416,19 @@ const getFont = (x) => {
 }
 
 const bin2dec = (x) => {
-    let dec = '000' + CPU.registers[x].toString(10).substr(-3)
-    CPU.memory[I] = parseInt(dec[0])
-    CPU.memory[I + 1] = parseInt(dec[1])
-    CPU.memory[I + 2] = parseInt(dec[2])
+    //console.log('0x0' + CPU.I.toString(16))
+    let dec = CPU.registers[x]
+    //console.log(dec)
+
+    CPU.memory[CPU.I] = dec / 100
+    CPU.memory[CPU.I + 1] = (dec % 100) / 10
+    CPU.memory[CPU.I + 2] = dec % 10
+    //console.log(Math.floor(dec / 100))
+    //console.log(Math.floor((dec % 100) / 10))
+    //console.log(dec % 10)
+    //console.log('MEM 0x0' + CPU.I.toString(16) + ': ' + CPU.memory[CPU.I])
+    //console.log('MEM 0x0' + (CPU.I+1).toString(16) + ': ' + CPU.memory[CPU.I+1])
+    //console.log('MEM 0x0' + (CPU.I+2).toString(16) + ': ' + CPU.memory[CPU.I+2])
     return 'Binary-Decimal Conversion'
 }
 
@@ -424,18 +439,18 @@ const store = (x) => {
     if(x === 0) {
         CPU.memory[CPU.I] = CPU.registers[0]
     }
-    if(cosmac) {
+    if(CPU.cosmac) {
         CPU.I += (x + 1)
     }
+    return 'Store'
 }
 
 const load = (x) => {
-    for(let i = 0; i < x+1; i++) {
-        CPU.registers[i] = CPU.memory[CPU.I + i]
+    for(let k = 0; k < x+1; k++) {
+        CPU.registers[k] = CPU.memory[CPU.I + k]
     }
-    if(cosmac) {
-        CPU.I += (x + 1)
+    if(CPU.cosmac) {
+        CPU.I += (x+1)
     }
+    return 'Load'
 }
-
-//-------------------------
