@@ -1,10 +1,10 @@
-export let pause = true;
+export let halt = true;
 
 export const inputHandler = {
 
     keyPressFunc: function (event) {
         if(event.code === 'KeyT') {
-            pause = !pause
+            halt = !halt
         }
     },
     keyDownFunc: function (event) {
@@ -61,6 +61,6 @@ export const getKey = val => {
     return [...keyVals].find(([key, value]) => val === value)[0];
 }
 
-export const setPause = () => {
-    pause = !pause
+export const setHalt = () => {
+    halt = !halt
 }

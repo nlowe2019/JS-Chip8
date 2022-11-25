@@ -1,10 +1,10 @@
-import { loadFont } from './font.js';
 import { updateLastInstr, updateRegisters } from './debug.js';
 import { CPU, getInstruction, decodeInstruction } from './CHIP8.js';
-import { pause, setPause } from './input.js';
+import { halt, setHalt } from './input.js';
 
 let FPS = 60
-let IPF = FPS * 10
+let IPF = 10
+let cpu
 
 const display = new Array(64*32).fill(false)
 const c = document.getElementById("canvas")
@@ -14,21 +14,23 @@ ctx.strokeStyle = "#d3d3d3"
 c.height = c.width/2
 const pLength = c.width / 64
 
-loadFont(CPU.memory)
+const loop = function () {
 
-const loop = () => {
+    if (!halt) {
 
-    if (!pause) {
+        if(cpu.delayTimer > 0)
+            cpu.delayTimer--;
+        if(cpu.soundTimer > 0)
+            cpu.soundTimer--;
 
-        CPU.delayTimer--;
-        CPU.soundTimer--;
+        for (let i = 0; i < IPF; i++) {
+            let op = getInstruction(cpu);
+            let prevInstruction = decodeInstruction(cpu, op, display);
 
-        for (let i = 0; i < IPF/FPS; i++) {
-            let op = getInstruction();
-            let prevInstruction = decodeInstruction(op, display);
-
-            updateRegisters(CPU.getRegisters(), CPU.getI(), CPU.getDelay(), CPU.getSound());
-            updateLastInstr(prevInstruction[0], prevInstruction[1], prevInstruction[2])
+            if(false) {
+                updateRegisters(cpu.getRegisters(), cpu.getI(), cpu.getDelay(), cpu.getSound());
+                updateLastInstr(prevInstruction[0], prevInstruction[1], prevInstruction[2])
+            }
         }
         show()
     }
@@ -56,13 +58,16 @@ const show = () => {
 };
 
 const fetchRom = async romName => {
+
+    cpu = new CPU(false)
+
     try {
         let response = await fetch('/ROMS' + romName)
         if (response.ok) {
             let buffer = await response.arrayBuffer();
             loadRom(new Uint8Array(buffer))
         } else {
-            alert("Error: " + response.status);
+            alert("Error: " + response.status)
         }
     } catch (error) {
         console.log(error);
@@ -71,12 +76,18 @@ const fetchRom = async romName => {
 
 const loadRom = rom => {
     for(let i = 0; i < rom.length; i++) {
-        CPU.memory[0x200 + i] = rom[i]
+        cpu.memory[0x200 + i] = rom[i]
     }
-    setPause()
-    console.log(CPU.memory)
+    setHalt()
 }
 
-fetchRom('/ufo.ch8');
+const rom_select = document.querySelector('#roms')
+rom_select.addEventListener('change', (event) => {
+    let rom =  event.target.value
+    setHalt()
+    display.fill(false)
+    fetchRom('/' + rom + '.ch8')
+})
 
+fetchRom('/opcode test.ch8')
 setInterval(loop, 1000/FPS)

@@ -1,0 +1,43 @@
+doctype html
+html
+    head
+        title html time
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+
+        link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous")
+        link(href="http://fonts.cdnfonts.com/css/arcade-classic" rel="stylesheet")
+        link(rel='stylesheet', href='style.css')
+        script(type="module" src="jquery-3.6.1.min.js")
+        script(type="module" src="script.js")
+        script(type="module" src="main.js")
+        script(type="module" src="debug.js")
+        script(type="module" src="input.js")
+        script(type="module" src="CHIP8.js")
+        script(type="module" src="font.js")
+    
+    body
+        div(class="text-center")
+            h1(class="header") CHIP 8
+        div(class="container-fluid main")
+            div(class="row mt-1")
+                div(class="col")
+                    label(for="roms") ROM:
+                    select(name="roms" id="roms")
+                        option(value="" selected disabled hidden)
+                        each rom in roms
+                            option(value=rom)= rom
+            div(class="row my-1")
+                div(class="col-sm-6 col-xs-12 mb-1")
+                    div(id="canvas_outer")
+                        canvas(id="canvas" width="1024px")
+                div(class="col-sm-6 col-xs-12 px-0")
+                    div(class="tabs h-100")
+                        ul(class="m-0 p-0")
+                            li(id="tab1" class="col selected") 1
+                            li(id="tab2" class="col") 2
+                            li(id="tab3" class="col") 3
+                        div(class="tab-content selected" id="tab1-content") 6 
+                        div(class="tab-content" id="tab2-content") alksjflkasffddg
+                        div(class="tab-content" id="tab3-content") alksjflkasf345345
+                        

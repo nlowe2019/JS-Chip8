@@ -16,7 +16,7 @@ const font =
     0xF0, 0x80, 0xF0, 0x80, 0xF0,  // E
     0xF0, 0x80, 0xF0, 0x80, 0x80]  // F
 
-export const loadFont = memory => {
+export const loadFont = (memory) => {
     for(let i = 0; i < font.length; i++) {
         memory[i + 0x050] = font[i];
     }
