@@ -1008,15 +1008,4 @@ node_modules/with/lib/reference.js.map
 node_modules/with/src/globals.ts
 node_modules/with/src/index.ts
 node_modules/with/src/reference.ts
-public/ROMS/Breakout.ch8
-public/ROMS/Brix.ch8
-public/ROMS/Connect4.ch8
-public/ROMS/IBM Logo.ch8
-public/ROMS/Opcode Test.ch8
-public/ROMS/Paddles.ch8
-public/ROMS/Pong.ch8
-public/ROMS/Space Invaders.ch8
-public/ROMS/Test Suite.ch8
-public/ROMS/Tron.ch8
-public/ROMS/UFO.ch8
 .vscode/launch.json
