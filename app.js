@@ -5,18 +5,14 @@ const express = require('express')
 const util = require('util')
 
 const app = express()
-const hostname = '127.0.0.1'
 const port = 3000
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.set("views", path.join(__dirname, "views"))
 app.set("view engine", "pug")
 
-app.get("/", (req, res) => {
-    res.status(200).send("WHATABYTE: Food For Devs");
-})
-app.get("/pug", async (req, res) => {
-    res.render("pugtest", roms=await romList())
+app.get("/", async (req, res) => {
+    res.render("pugtest", roms= await romList())
 })
 
 app.listen(port, () => {
@@ -37,4 +33,5 @@ const romList = async () => {
     return list
 }
 
-romList()
+//export api
+module.exports = app
