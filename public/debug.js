@@ -1,17 +1,18 @@
 export const log = []
 
-export const updateRegisters = (registers, I, delay, sound) => {
+export const updateRegisters = (registers, pc, I, delay, sound) => {
     for(let i=0; i<registers.length; i++) {
         try{
-            document.getElementById(`V${i.toString(16)}`).innerHTML = registers[i];
+            document.getElementById(`V${i.toString(16).toUpperCase()}_val`).innerHTML = registers[i].toString(16);
         } catch (err) {
             console.log(`V${i.toString(16)}`)
             console.log(err)
         }
     }
-    document.getElementById('I').innerHTML = '0x' + ('0000' + I.toString(16)).substr(-4);
-    document.getElementById('Delay').innerHTML = delay;
-    document.getElementById('Sound').innerHTML = sound;
+    document.getElementById('pc_val').innerHTML = '0x' + ('000' + pc.toString(16)).substr(-3);
+    document.getElementById('index_val').innerHTML = '0x' + ('000' + I.toString(16)).substr(-3);
+    document.getElementById('delay_val').innerHTML = delay;
+    document.getElementById('sound_val').innerHTML = sound;
 }
 
 export const updateLastInstr = (pc, opcode, instr) => {

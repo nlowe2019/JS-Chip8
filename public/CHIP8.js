@@ -1,5 +1,6 @@
 import { keyActive, keyVals, getKey } from './input.js'
-import { loadFont } from './font.js';
+import { load_font } from './font.js';
+import { play_sound } from './sound.js'
 
 export class CPU {
 
@@ -15,7 +16,7 @@ export class CPU {
         // Configurable
         this.cosmac = cos
 
-        loadFont(this.memory)
+        load_font(this.memory)
     }
 
     getDelay = function () {
@@ -29,6 +30,9 @@ export class CPU {
     }
     getRegisters = function () {
         return this.registers
+    }
+    getPC = function () {
+        return this.pc
     }
 };
 
@@ -100,13 +104,13 @@ export const decodeInstruction = (cpu, op, display) => {
                     instruction = VXsubVY(cpu, X, Y)
                     break;
                 case 6: // Shift right
-                    instruction = VXshiftL(cpu, X, Y)
+                    instruction = VXshiftR(cpu, X, Y)
                     break;
                 case 7: // Subtract (y - x)
                     instruction = VYsubVX(cpu, X, Y)
                     break;
                 case 0xE: // Shift left
-                    instruction = VXshiftR(cpu, X, Y)
+                    instruction = VXshiftL(cpu, X, Y)
                     break;
             }
             break;
@@ -215,124 +219,134 @@ const draw = (cpu, X, Y, N, display) => {
 
 // Instruction Set
 
+//00EE
 const returnSub = (cpu) => {
     cpu.pc = cpu.stack.pop()
     return 'Return Subroutine'
 }
-
+//00E0
 const clearScreen = (display) => {
     display.fill(false)
     return 'Clear Screen'
 }
-
+//1nnn
 const jump = (cpu, op) => {
     cpu.pc = 0x0fff & op
     return 'Jump'
 }
-
+//2nnn
 const callSub = (cpu, op) => {
     cpu.stack.push(cpu.pc)
     cpu.pc = 0x0fff & op
     return 'Call Subroutine'
 }
-
+//3xnn
 const skipIfEqual = (cpu, x, op) => {
     let n = 0x00ff & op
     if(cpu.registers[x] === n) {
         cpu.pc += 2
     }
-    return 'Skip'
+    return 'Skip E'
 }
-
+//4xnn
 const skipIfNotEqual = (cpu, x, op) => {
     let n = 0x00ff & op
     if(cpu.registers[x] !== n) {
         cpu.pc += 2
     }
-    return 'Skip'
+    return 'Skip NE'
 }
-
+//5xy0
 const skipIfRegEqual = (cpu, x, y) => {
     if(cpu.registers[x] === cpu.registers[y]) {
         cpu.pc += 2
     }
-    return 'Skip'
+    return 'Skip E'
 }
-
+//6xnn
 const setVX = (cpu, x, op) => {
-    cpu.registers[x] = 0x00ff & op
+    cpu.registers[x] = (0xff & op)
     return 'VX = N'
 }
-
+//7xnn
 const VXplusN = (cpu, x, op) => {
-    cpu.registers[x] += (0x00ff & op)
+    cpu.registers[x] += (0xff & op)
     return 'VX + N'
 }
-
+//8xy0
 const VXeqVY = (cpu, x, y) => {
     cpu.registers[x] = cpu.registers[y]
     return 'VX = VY'
 }
-
+//8xy1
 const VXorVY = (cpu, x, y) => {
     cpu.registers[x] |= cpu.registers[y]
     return 'VX OR VY'
 }
-
+//8xy2
 const VXandVY = (cpu, x, y) => {
     cpu.registers[x] &= cpu.registers[y]
     return 'VX AND VY'
 }
-
+//8xy3
 const VXxorVY = (cpu, x, y) => {
     cpu.registers[x] = cpu.registers[x] ^ cpu.registers[y];
     return 'VX XOR VY'
 }
-
+//8xy4
 const VXplusVY = (cpu, x, y) => {
+    // activate VF flag if result > 255
+    cpu.registers[0xf] = (cpu.registers[x] + cpu.registers[y] > 255) ? 1 : 0
+    
     cpu.registers[x] += cpu.registers[y]
     return 'VX + VY'
 }
-
-const VXsubVY = (cpu, x, y) => {
+//8xy5
+const VXsubVY = (cpu, x, y) => { 
+    // activate VF flag if VX > VY
+    cpu.registers[0xf] = (cpu.registers[x] > cpu.registers[y]) ? 1 : 0
+    
     cpu.registers[x] = cpu.registers[x] - cpu.registers[y]
     return 'VX - VY'
 }
-
+//8xy7
 const VYsubVX = (cpu, x, y) => {
+    // activate VF flag if VY > VX
+    cpu.registers[0xf] = (cpu.registers[y] > cpu.registers[x]) ? 1 : 0
+    
     cpu.registers[x] = cpu.registers[y] - cpu.registers[x]
     return 'VY - VX'
 }
-
-const VXshiftR = (cpu, x, y) => {
-    if(cpu.cosmac) {
-        cpu.registers[x] = cpu.registers[y]
+//8xy6
+export const VXshiftR = (cpu, x, y) => {
+    if(!cpu.cosmac) {
+        y = x
     }
-    cpu.registers[0xf] = cpu.registers[x] & 0x1
-    cpu.registers[x] >>= 1
+    cpu.registers[0xf] = cpu.registers[y] & 0x1
+    cpu.registers[x] = cpu.registers[y] >>> 1
     return 'Shift Right'
 }
-
-const VXshiftL = (cpu, x, y) => {
-    if(cpu.cosmac) {
-        cpu.registers[x] = cpu.registers[y]
+//8xyE
+export const VXshiftL = (cpu, x, y) => {
+    if(!cpu.cosmac) {
+        y = x
     }
-    cpu.registers[0xf] = cpu.registers[x] >> 7
-    cpu.registers[x] <<= 1
+    cpu.registers[0xf] = (cpu.registers[y] >> 7) & 0x1
+    cpu.registers[x] = cpu.registers[y] << 1
     return 'Shift Left'
 }
-
+//9xy0
 const skipIfRegNotEqual = (cpu, x, y) => {
     if(cpu.registers[x] !== cpu.registers[y]) {
         cpu.pc += 2
     }
 }
-
+//Annn
 const setIndex = (cpu, op) => {
     cpu.I = 0x0fff & op
     return 'Set Index'
 }
-
+//Bnnn
 const jumpOffset = (cpu, x, op) => {
     if(cpu.cosmac) {
         cpu.pc = (0x0fff & op) + cpu.registers[0];
@@ -341,41 +355,42 @@ const jumpOffset = (cpu, x, op) => {
     }
     return 'Jump Offset'
 }
-
+//Cxnn
 const random = (cpu, x, op) => {
     // generate rand 0-255
     let rand = Math.floor(Math.random() * 255) & (0x00ff & op)
     cpu.registers[x] = rand;
     return 'Random'
 }
-
+//Ex9E
 const skipIfKey = (cpu, x) => {
     let key = getKey(cpu.registers[x])
     cpu.pc += (keyActive[key] ? 2 : 0)
     return 'Skip if key active'
 }
-
+//ExA1
 const skipIfNotKey = (cpu, x) => {
     let key = getKey(cpu.registers[x])
     cpu.pc += (keyActive[key] ? 0 : 2)
     return 'Skip if key inactive'
 }
-
+//Fx07
 const setVX2Delay = (cpu, x) => {
     cpu.registers[x] = cpu.delayTimer
     return 'VX = Delay'
 }
-
+//Fx15
 const setDelay2VX = (cpu, x) => {
     cpu.delayTimer = cpu.registers[x]
     return 'Delay = VX'
 }
-
+//Fx18
 const setSound2VX = (cpu, x) => {
     cpu.soundTimer = cpu.registers[x]
+    play_sound(1000/60 * cpu.soundTimer)
     return 'Sound = VX'
 }
-
+//Fx1E
 const addIndex = (cpu, x) => {
     if(!cpu.cosmac && cpu.I + cpu.registers[x] > 0xFFF) {
         cpu.registers[0xF] = 1
@@ -384,6 +399,7 @@ const addIndex = (cpu, x) => {
     return 'Index + VX'
 }
 
+//Fx0A
 //blocks until key press
 const waitKey = (cpu, x) => {
     let key = false
@@ -403,7 +419,7 @@ const waitKey = (cpu, x) => {
     }
     return 'Wait for Key'
 }
-
+//Fx29
 const getFont = (cpu, x) => {
     if(cpu.cosmac) {
         cpu.I = 0x050 + (5 * (cpu.registers[x] & 0x0F))
@@ -412,7 +428,7 @@ const getFont = (cpu, x) => {
     }
     return 'Get Font'
 }
-
+//Fx33
 const bin2dec = (cpu, x) => {
     //console.log('0x0' + cpu.I.toString(16))
     let dec = cpu.registers[x]
@@ -429,7 +445,7 @@ const bin2dec = (cpu, x) => {
     //console.log('MEM 0x0' + (cpu.I+2).toString(16) + ': ' + cpu.memory[cpu.I+2])
     return 'Binary-Decimal Conversion'
 }
-
+//Fx55
 const store = (cpu, x) => {
     for(let i = 0; i < x+1; i++) {
         cpu.memory[cpu.I + i] = cpu.registers[i]
@@ -442,7 +458,7 @@ const store = (cpu, x) => {
     }
     return 'Store'
 }
-
+//Fx65
 const load = (cpu, x) => {
     for(let k = 0; k < x+1; k++) {
         cpu.registers[k] = cpu.memory[cpu.I + k]
