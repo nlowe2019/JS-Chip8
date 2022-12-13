@@ -273,20 +273,24 @@ span {
     box-shadow: 0 4px 0 0 #0f0;
 }
 .key:hover{
-    box-shadow: 0 4px 0 0 #f00;
+    color: #aaa;
+    border-color: #0f0;
+    box-shadow: 0 4px 0 0 #0f0;
 	background-color: #111;
 }
 .key:active {
     box-shadow: 0 1px 0 0 #f00;
     transform: translatey(3px);
+    border-color: #f00;
+    box-shadow: 0 4px 0 0 #f00;
 }
 .key-active {
-	background-color: #111;
-    box-shadow: 0 1px 0 0 #f00;
-    transform: translatey(3px);
-    transition: all 0.1s ease;
-    border-color: #f00;
-    color: #f00;
+	background-color: #111 !important;
+    box-shadow: 0 1px 0 0 #f00 !important;
+    transform: translatey(3px) !important;
+    transition: all 0.1s ease !important;
+    border-color: #f00 !important;
+    color: #f00 !important;
 }
 
 *:focus {
