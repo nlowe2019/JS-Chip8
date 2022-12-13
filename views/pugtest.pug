@@ -4,9 +4,9 @@ html
         title html time
         meta(charset="utf-8")
         meta(name="viewport" content="width=device-width, initial-scale=1")
+        meta(name="google" content="notranslate")
 
         link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous")
-        link(href="http://fonts.cdnfonts.com/css/arcade-classic" rel="stylesheet")
         script(src="https://kit.fontawesome.com/ddede46750.js" crossorigin="anonymous")
         link(rel='stylesheet', href='style.css')
         script(type="module" src="jquery-3.6.1.min.js")
@@ -21,106 +21,137 @@ html
     
     body
         div(class="px-2")
-            h1(class="header") CHIP-8
+            h1(class="fw-bold header") CHIP-8
         div(class="container-fluid main py-1")
-            div(class="row pt-1")
+            div(class="row mx-1 my-1")
                 div(class="col-auto")
-                    label(for="roms" class="") ROM:
-                    select(name="roms" id="roms" class="mx-1 h-100")
+                    label(for="roms" class="fw-bold" style="color: #0f0;") ROM:
+                    select(name="roms" id="roms" class="decorated h-100" style="")
                         option(value="" selected disabled hidden)
                         each rom in roms
-                            option(value=rom)= rom
+                            option(class="opt" value=rom)= rom
                 div(class="col-auto")
-                    div(id="pause" class="h-100 center-x text-center emubtn")
-                        h7 pause
+                    button(id="pause" class="h-100 emu-btn") Pause
                 div(class="col-auto")
-                    div(id="step" class="h-100 center-x text-center emubtn")
-                        h7 step
-                div(class="col-2")
+                    button(id="step" class="h-100 emu-btn") Step
+                div(class="col-auto")
                     input(class="h-100" type="range" min="1" max="30" value="10" class="slider" id="myRange")
-            div(class="row mt-1")
-                div(class="col-lg-7 col-sm-6 col-xs-12 mt-1")
-                    div(id="canvas_outer" class="center-y")
-                        canvas(id="canvas" width="1024px")
-                div(class="col-lg-5 col-sm-6 col-xs-12 px-0")
-                    div(class="tabs d-flex flex-column px-1")
+                div(class="col")
+                div(class="col-auto")
+                    button(id="debug" class="h-100 emu-btn selected") Debug
+                div(class="col-auto")
+                    h6(class="h-100 ") Settings
+            div(class="row mx-1 mt-3")
+                div(id="canvas-outer" class="col mb-3 py-1 center")
+                    canvas(id="canvas" class="center-y p-2" width="1024px")
+                div(class="mb-3 col-lg-5 col-sm-6 col-xs-12 px-0")
+                    div(class="tabs h-100 d-flex flex-column px-1")
                         ul(class="m-0 p-0")
-                            li(id="tab1" class="col selected") Registers
-                            li(id="tab2" class="col") Instructions
-                            li(id="tab3" class="col") Controls
-                        div(class="tab-content selected justify-content-evenly overflow-auto" id="tab1-content")
-                            div(class="d-flex justify-content-between")
+                            li(id="tab1" class="debug col selected") Registers
+                            li(id="tab2" class="debug col") Log
+                            li(id="tab3" class="col") Keypad
+                        div(class="tab-content debug selected justify-content-evenly overflow-auto" id="tab1-content")
+                            div(class="d-flex justify-content-between register-row")
                                 div(class="d-flex justify-content-between col-3") 
-                                    span(class="register_lab") V0: 
+                                    span(class="register-label") V0: 
                                     span(id="V0_val" class="register") 0
                                 div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") V1: 
+                                    span(class="register-label") V8: 
+                                    span(id="V8_val" class="register") 0
+                                div(class="d-flex justify-content-between col-4")
+                                    span(class="register-label") PC: 
+                                    span(id="pc_val" class="fs-sm register") 0x000
+                            div(class="d-flex justify-content-between register-row")
+                                div(class="d-flex justify-content-between col-3")
+                                    span(class="register-label") V1: 
                                     span(id="V1_val" class="register") 0
-                                div(class="d-flex justify-content-between col-4")
-                                    span(class="register_lab") PC: 
-                                    span(id="pc_val" class="register") 0x000
-                            div(class="d-flex row-flex justify-content-between")
                                 div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") V2: 
+                                    span(class="register-label") V9: 
+                                    span(id="V9_val" class="register") 0
+                                div(class="d-flex justify-content-between col-4")
+                                    span(class="register-label") Index: 
+                                    span(id="index_val" class="fs-sm register") 0x000
+                            div(class="d-flex justify-content-start register-row")
+                                div(class="d-flex justify-content-between col-3")
+                                    span(class="register-label") V2: 
                                     span(id="V2_val" class="register") 0
+                                div(class="col-1")
                                 div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") V3: 
+                                    span(class="register-label") VA: 
+                                    span(id="VA_val" class="register") 0
+                            div(class="d-flex justify-content-between register-row")
+                                div(class="d-flex justify-content-between col-3")
+                                    span(class="register-label") V3: 
                                     span(id="V3_val" class="register") 0
-                                div(class="d-flex justify-content-between col-4")
-                                    span(class="register_lab") Index: 
-                                    span(id="index_val" class="register") 0x000
-                            div(class="d-flex row-flex justify-content-between")
                                 div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") V4: 
+                                    span(class="register-label") VB: 
+                                    span(id="VB_val" class="register") 0
+                                div(class="d-flex justify-content-between col-4")
+                                    span(class="register-label") Delay: 
+                                    span(id="delay_val" class="fs-sm register") 0
+                            div(class="d-flex justify-content-between register-row")
+                                div(class="d-flex justify-content-between col-3")
+                                    span(class="register-label") V4: 
                                     span(id="V4_val" class="register") 0
                                 div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") V5: 
-                                    span(id="V5_val" class="register") 0
+                                    span(class="register-label") VC: 
+                                    span(id="VC_val" class="register") 0
                                 div(class="d-flex justify-content-between col-4")
-                                    span(class="register_lab") Delay: 
-                                    span(id="delay_val" class="register") 0
-                            div(class="d-flex row-flex justify-content-between")
+                                    span(class="register-label") Sound: 
+                                    span(id="sound_val" class="fs-sm register") 0
+                            div(class="d-flex justify-content-start register-row")
                                 div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") V6: 
+                                    span(class="register-label") V5: 
+                                    span(id="V5_val" class="register") 0
+                                div(class="col-1")
+                                div(class="d-flex justify-content-between col-3")
+                                    span(class="register-label") VD: 
+                                    span(id="VD_val" class="register") 0
+                            div(class="d-flex justify-content-between register-row")
+                                div(class="d-flex justify-content-between col-3")
+                                    span(class="register-label") V6: 
                                     span(id="V6_val" class="register") 0
                                 div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") V7: 
-                                    span(id="V7_val" class="register") 0
-                                div(class="d-flex justify-content-between col-4")
-                                    span(class="register_lab") Sound: 
-                                    span(id="sound_val" class="register") 0
-                            div(class="d-flex row-flex justify-content-start")
-                                div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") V8: 
-                                    span(id="V8_val" class="register") 0
-                                div(class="col-1")
-                                div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") V9: 
-                                    span(id="V9_val" class="register") 0
-                            div(class="d-flex row-flex justify-content-start")
-                                div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") VA: 
-                                    span(id="VA_val" class="register") 0
-                                div(class="col-1")
-                                div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") VB: 
-                                    span(id="VB_val" class="register") 0
-                            div(class="d-flex row-flex justify-content-start")
-                                div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") VC: 
-                                    span(id="VC_val" class="register") 0
-                                div(class="col-1")
-                                div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") VD: 
-                                    span(id="VD_val" class="register") 0
-                            div(class="d-flex row-flex justify-content-start")
-                                div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") VE: 
+                                    span(class="register-label") VE: 
                                     span(id="VE_val" class="register") 0
+                                div(class="d-flex justify-content-between col-4")
+                                    span(class="register-label") Opcode: 
+                                    span(id="opcode_val" class="register") 0x0000
+                            div(class="d-flex justify-content-start register-row")
+                                div(class="d-flex justify-content-between col-3")
+                                    span(class="register-label") V7: 
+                                    span(id="V7_val" class="register") 0
                                 div(class="col-1")
                                 div(class="d-flex justify-content-between col-3")
-                                    span(class="register_lab") VF: 
+                                    span(class="register-label") VF: 
                                     span(id="VF_val" class="register") 0
-                        div(class="tab-content" id="tab2-content") alksjflkasffddg
-                        div(class="tab-content" id="tab3-content") alksjflkasf345345
+                            div(class="pt-1 d-flex")
+                                button(value="2" class="base-btn" style="border-radius: 40% 0% 0% 40%;") 2
+                                button(value="10" class="base-btn selected") 10
+                                button(value="16" class="base-btn" style="border-radius: 0% 40% 40% 0%;") 16
+                        div(class="tab-content debug" id="tab2-content")
+                            p(id="log")
+                        div(class="tab-content flex-row align-items-center justify-content-evenly overflow-hidden" id="tab3-content")
+                            div(id="keypad" class="justify-content-between" style="")
+                                div(class="d-flex key-row")
+                                    button(id="key-1" class="key emu-btn" value="1") 1
+                                    button(id="key-2" class="key emu-btn" value="2") 2
+                                    button(id="key-3" class="key emu-btn" value="3") 3
+                                    button(id="key-4" class="key emu-btn" value="4") C
+                                div(class="d-flex key-row")
+                                    button(id="key-q" class="key emu-btn" value="q") 4
+                                    button(id="key-w" class="key emu-btn" value="w") 5
+                                    button(id="key-e" class="key emu-btn" value="e") 6
+                                    button(id="key-r" class="key emu-btn" value="r") D
+                                div(class="d-flex key-row")
+                                    button(id="key-a" class="key emu-btn" value="a") 7
+                                    button(id="key-s" class="key emu-btn" value="s") 8
+                                    button(id="key-d" class="key emu-btn" value="d") 9
+                                    button(id="key-f" class="key emu-btn" value="f") E
+                                div(class="d-flex key-row")
+                                    button(id="key-z" class="key emu-btn" value="z") A
+                                    button(id="key-x" class="key emu-btn" value="x") 0
+                                    button(id="key-c" class="key emu-btn" value="c") B
+                                    button(id="key-v" class="key emu-btn" value="v") F
+
                         

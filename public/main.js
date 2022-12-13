@@ -1,4 +1,4 @@
-import { updateLastInstr, updateRegisters } from './debug.js';
+import { debug, updateLog, updateRegisters } from './debug.js';
 import { CPU, getInstruction, decodeInstruction } from './CHIP8.js';
 import { halt, setHalt } from './input.js';
 import { Display } from './display.js'
@@ -15,30 +15,27 @@ const loop = function (n) {
     if(cpu.soundTimer > 0)
         cpu.soundTimer--;
 
-    let is = 0
     for (let i = 0; i < n; i++) {
         let op = getInstruction(cpu);
-        let prevInstruction = decodeInstruction(cpu, op, display.pixels);
 
-        //updateRegisters(cpu.getRegisters(), cpu.getPC(), cpu.getI(), cpu.getDelay(), cpu.getSound());
+        let log_vals = decodeInstruction(cpu, op, display.pixels);
 
-        if(false) {
-            updateLastInstr(prevInstruction[0], prevInstruction[1], prevInstruction[2])
-        }
-        is++
+        if(debug)
+            updateRegisters(cpu.getRegisters(), cpu.getPC(), cpu.getI(), cpu.getDelay(), cpu.getSound(), getInstruction(cpu));
+            updateLog(log_vals[0], log_vals[1], log_vals[2], log_vals[3], log_vals[4], log_vals[5], log_vals[6])
     }
     display.show()
 };
 
-const fetchRom = async romName => {
+const fetchRom = async (romName, halt_on_load) => {
 
-    cpu = new CPU(!true)
+    cpu = new CPU(true)
 
     try {
         let response = await fetch('/ROMS' + romName)
         if (response.ok) {
             let buffer = await response.arrayBuffer();
-            loadRom(new Uint8Array(buffer))
+            loadRom(new Uint8Array(buffer), halt_on_load)
         } else {
             alert("Error: " + response.status)
         }
@@ -47,35 +44,39 @@ const fetchRom = async romName => {
     }
 }
 
-const loadRom = rom => {
+const loadRom = (rom, halt_on_load) => {
     for(let i = 0; i < rom.length; i++) {
         cpu.memory[0x200 + i] = rom[i]
     }
-    if(halt)
+    if(!halt_on_load)
         setHalt()
+    display.show()
+    updateRegisters(cpu.getRegisters(), cpu.pc, cpu.I, cpu.delayTimer, cpu.soundTimer, 0)
 }
 
 const rom_select = document.querySelector('#roms')
 rom_select.addEventListener('change', (event) => {
     let rom =  event.target.value
+    let halt_on_load = halt
     if(!halt)
         setHalt()
     display.pixels.fill(false)
-    fetchRom('/' + rom + '.ch8')
+    fetchRom('/' + rom + '.ch8', halt_on_load)
 })
 
 $(function() {
-    $("div#pause").click(function () {
+    $("#pause").click(function () {
+        console.log("pause")
         setHalt();
+        halt ? $('#pause').addClass('selected') : $('#pause').removeClass('selected')
     })
-    $("div#step").click(function () {
+    $("#step").click(function () {
         if(halt) {
             loop(1)
         }
     })
     $('input[type=range]').on('input', function () {
         IPF = $(this).val()
-        console.log(IPF)
     })
 })
 

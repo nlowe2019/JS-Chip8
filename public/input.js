@@ -8,16 +8,27 @@ export const inputHandler = {
         }
     },
     keyDownFunc: function (event) {
-        keyActive[event.key.toString()] = true
+        let key = event.key.toString()
+        keyActive[key] = true
+        $('#key-'+key).addClass('key-active')
     },
     keyUpFunc: function (event) {
-        keyActive[event.key.toString()] = false
+        let key = event.key.toString()
+        keyActive[key] = false
+        $('#key-'+key).removeClass('key-active')
     }
 }
 
 const keyPress = document.addEventListener('keypress', inputHandler.keyPressFunc, false)
 const keyDown = document.addEventListener('keydown', inputHandler.keyDownFunc, false)
 const keyUp = document.addEventListener('keyup', inputHandler.keyUpFunc, false)
+
+$(".key").mousedown(function () {
+    keyActive[($(this).attr('value'))] = true
+})
+$(".key").mouseup(function () {
+    keyActive[($(this).attr('value'))] = false   
+})
 
 export const keyVals = new Map([
     ['1', 0x1],

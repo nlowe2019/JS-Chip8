@@ -39,17 +39,21 @@ export class CPU {
 export const getInstruction = (cpu) => {
     let instr1 = cpu.memory[cpu.pc];
     let instr2 = cpu.memory[cpu.pc + 1];
-    cpu.pc +=2
     return ((0xffff & instr1) << 8) + instr2;
 };
 
 export const decodeInstruction = (cpu, op, display) => {
+    let prev_pc = cpu.pc
+    let prev_registers = cpu.registers
+    let prev_sound = cpu.soundTimer
+    let prev_delay = cpu.delayTimer
+    let prev_I = cpu.I
+    cpu.pc +=2
+
     let O = (op & 0xf000) >> 12;
     let X = ((op & 0x0f00) << 4) >> 12;
     let Y = ((op & 0x00f0) << 8) >> 12;
     let N = ((op & 0x000f) << 12) >> 12;
-
-    let currpc = cpu.pc
     let instruction = ''
 
     switch (O) {
@@ -174,7 +178,7 @@ export const decodeInstruction = (cpu, op, display) => {
             }
             break;
     }
-    return [currpc, op, instruction]
+    return [prev_pc, op, instruction, prev_registers, prev_I, prev_delay, prev_sound]
 }
 
 const draw = (cpu, X, Y, N, display) => {
@@ -222,23 +226,23 @@ const draw = (cpu, X, Y, N, display) => {
 //00EE
 const returnSub = (cpu) => {
     cpu.pc = cpu.stack.pop()
-    return 'Return Subroutine'
+    return '00EE - RET'
 }
 //00E0
 const clearScreen = (display) => {
     display.fill(false)
-    return 'Clear Screen'
+    return '00E0 - CLS'
 }
 //1nnn
 const jump = (cpu, op) => {
     cpu.pc = 0x0fff & op
-    return 'Jump'
+    return '1nnn - JP'
 }
 //2nnn
 const callSub = (cpu, op) => {
     cpu.stack.push(cpu.pc)
     cpu.pc = 0x0fff & op
-    return 'Call Subroutine'
+    return '2nnn - CALL'
 }
 //3xnn
 const skipIfEqual = (cpu, x, op) => {
@@ -246,7 +250,7 @@ const skipIfEqual = (cpu, x, op) => {
     if(cpu.registers[x] === n) {
         cpu.pc += 2
     }
-    return 'Skip E'
+    return '3xkk - SE'
 }
 //4xnn
 const skipIfNotEqual = (cpu, x, op) => {
@@ -254,44 +258,44 @@ const skipIfNotEqual = (cpu, x, op) => {
     if(cpu.registers[x] !== n) {
         cpu.pc += 2
     }
-    return 'Skip NE'
+    return '4xkk - SNE'
 }
 //5xy0
 const skipIfRegEqual = (cpu, x, y) => {
     if(cpu.registers[x] === cpu.registers[y]) {
         cpu.pc += 2
     }
-    return 'Skip E'
+    return '5xy0 - SE'
 }
 //6xnn
 const setVX = (cpu, x, op) => {
     cpu.registers[x] = (0xff & op)
-    return 'VX = N'
+    return '6xkk - LD'
 }
 //7xnn
 const VXplusN = (cpu, x, op) => {
     cpu.registers[x] += (0xff & op)
-    return 'VX + N'
+    return '7xkk - ADD'
 }
 //8xy0
 const VXeqVY = (cpu, x, y) => {
     cpu.registers[x] = cpu.registers[y]
-    return 'VX = VY'
+    return '8xy0 - LD'
 }
 //8xy1
 const VXorVY = (cpu, x, y) => {
     cpu.registers[x] |= cpu.registers[y]
-    return 'VX OR VY'
+    return '8xy1 - OR'
 }
 //8xy2
 const VXandVY = (cpu, x, y) => {
     cpu.registers[x] &= cpu.registers[y]
-    return 'VX AND VY'
+    return '8xy2 - AND'
 }
 //8xy3
 const VXxorVY = (cpu, x, y) => {
     cpu.registers[x] = cpu.registers[x] ^ cpu.registers[y];
-    return 'VX XOR VY'
+    return '8xy3 - XOR'
 }
 //8xy4
 const VXplusVY = (cpu, x, y) => {
@@ -299,7 +303,7 @@ const VXplusVY = (cpu, x, y) => {
     cpu.registers[0xf] = (cpu.registers[x] + cpu.registers[y] > 255) ? 1 : 0
     
     cpu.registers[x] += cpu.registers[y]
-    return 'VX + VY'
+    return '8xy4 - ADD'
 }
 //8xy5
 const VXsubVY = (cpu, x, y) => { 
@@ -307,7 +311,7 @@ const VXsubVY = (cpu, x, y) => {
     cpu.registers[0xf] = (cpu.registers[x] > cpu.registers[y]) ? 1 : 0
     
     cpu.registers[x] = cpu.registers[x] - cpu.registers[y]
-    return 'VX - VY'
+    return '8xy5 - SUB'
 }
 //8xy7
 const VYsubVX = (cpu, x, y) => {
@@ -315,7 +319,7 @@ const VYsubVX = (cpu, x, y) => {
     cpu.registers[0xf] = (cpu.registers[y] > cpu.registers[x]) ? 1 : 0
     
     cpu.registers[x] = cpu.registers[y] - cpu.registers[x]
-    return 'VY - VX'
+    return '8xy7 - SUBN'
 }
 //8xy6
 export const VXshiftR = (cpu, x, y) => {
@@ -324,7 +328,7 @@ export const VXshiftR = (cpu, x, y) => {
     }
     cpu.registers[0xf] = cpu.registers[y] & 0x1
     cpu.registers[x] = cpu.registers[y] >>> 1
-    return 'Shift Right'
+    return '8xy6 - SHR'
 }
 //8xyE
 export const VXshiftL = (cpu, x, y) => {
@@ -333,18 +337,19 @@ export const VXshiftL = (cpu, x, y) => {
     }
     cpu.registers[0xf] = (cpu.registers[y] >> 7) & 0x1
     cpu.registers[x] = cpu.registers[y] << 1
-    return 'Shift Left'
+    return '8xyE - SHL'
 }
 //9xy0
 const skipIfRegNotEqual = (cpu, x, y) => {
     if(cpu.registers[x] !== cpu.registers[y]) {
         cpu.pc += 2
     }
+    return '9xy0 - SNE'
 }
 //Annn
 const setIndex = (cpu, op) => {
     cpu.I = 0x0fff & op
-    return 'Set Index'
+    return 'Annn - LD I'
 }
 //Bnnn
 const jumpOffset = (cpu, x, op) => {
@@ -353,42 +358,43 @@ const jumpOffset = (cpu, x, op) => {
     } else {
         cpu.pc = (0x0fff & op) + cpu.registers[x];
     }
-    return 'Jump Offset'
+    return 'Bnnn - JP'
 }
 //Cxnn
 const random = (cpu, x, op) => {
     // generate rand 0-255
     let rand = Math.floor(Math.random() * 255) & (0x00ff & op)
     cpu.registers[x] = rand;
-    return 'Random'
+    return 'Cxkk - RND'
 }
 //Ex9E
 const skipIfKey = (cpu, x) => {
     let key = getKey(cpu.registers[x])
     cpu.pc += (keyActive[key] ? 2 : 0)
-    return 'Skip if key active'
+    return 'Ex9E - SKP'
 }
 //ExA1
 const skipIfNotKey = (cpu, x) => {
     let key = getKey(cpu.registers[x])
     cpu.pc += (keyActive[key] ? 0 : 2)
-    return 'Skip if key inactive'
+    return 'ExA1 - SKNP'
 }
 //Fx07
 const setVX2Delay = (cpu, x) => {
     cpu.registers[x] = cpu.delayTimer
-    return 'VX = Delay'
+    return 'Fx07 - LD'
 }
 //Fx15
 const setDelay2VX = (cpu, x) => {
     cpu.delayTimer = cpu.registers[x]
-    return 'Delay = VX'
+    return 'Fx15 - LD DT'
 }
 //Fx18
 const setSound2VX = (cpu, x) => {
     cpu.soundTimer = cpu.registers[x]
+    cpu.soundTimer < 2 ? cpu.soundTimer = 2 : cpu.soundTimer = cpu.soundTimer
     play_sound(1000/60 * cpu.soundTimer)
-    return 'Sound = VX'
+    return 'Fx18 - LD ST'
 }
 //Fx1E
 const addIndex = (cpu, x) => {
@@ -396,7 +402,7 @@ const addIndex = (cpu, x) => {
         cpu.registers[0xF] = 1
     }
     cpu.I = cpu.I + cpu.registers[x]
-    return 'Index + VX'
+    return 'Fx1E - ADD I'
 }
 
 //Fx0A
@@ -417,7 +423,7 @@ const waitKey = (cpu, x) => {
     } else {
         cpu.pc -= 2
     }
-    return 'Wait for Key'
+    return 'Fx0A - LD'
 }
 //Fx29
 const getFont = (cpu, x) => {
@@ -426,24 +432,16 @@ const getFont = (cpu, x) => {
     } else {
         cpu.I = 0x050 + (5 *(cpu.registers[x]))
     }
-    return 'Get Font'
+    return 'Fx29 - LD F'
 }
 //Fx33
 const bin2dec = (cpu, x) => {
-    //console.log('0x0' + cpu.I.toString(16))
     let dec = cpu.registers[x]
-    //console.log(dec)
 
     cpu.memory[cpu.I] = dec / 100
     cpu.memory[cpu.I + 1] = (dec % 100) / 10
     cpu.memory[cpu.I + 2] = dec % 10
-    //console.log(Math.floor(dec / 100))
-    //console.log(Math.floor((dec % 100) / 10))
-    //console.log(dec % 10)
-    //console.log('MEM 0x0' + cpu.I.toString(16) + ': ' + cpu.memory[cpu.I])
-    //console.log('MEM 0x0' + (cpu.I+1).toString(16) + ': ' + cpu.memory[cpu.I+1])
-    //console.log('MEM 0x0' + (cpu.I+2).toString(16) + ': ' + cpu.memory[cpu.I+2])
-    return 'Binary-Decimal Conversion'
+    return 'Fx33 - LD B'
 }
 //Fx55
 const store = (cpu, x) => {
@@ -456,7 +454,7 @@ const store = (cpu, x) => {
     if(cpu.cosmac) {
         cpu.I += (x + 1)
     }
-    return 'Store'
+    return 'Fx55 - STORE [I]'
 }
 //Fx65
 const load = (cpu, x) => {
@@ -466,5 +464,5 @@ const load = (cpu, x) => {
     if(cpu.cosmac) {
         cpu.I += (x+1)
     }
-    return 'Load'
+    return 'Fx65 - LD [I]'
 }
