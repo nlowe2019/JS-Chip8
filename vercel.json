@@ -3,7 +3,7 @@
     "version": 2,
     "description": "node + vercel test",
     "engines": {
-        "node": "16.x"
+        "node": "18.x"
     },
     "builds": [
         {
