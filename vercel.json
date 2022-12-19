@@ -1,5 +1,10 @@
 {
+    "name": "vercel-test",
     "version": 2,
+    "description": "node + vercel test",
+    "engines": {
+        "node": "16.x"
+    },
     "builds": [
         {
             "src": "app.js",
