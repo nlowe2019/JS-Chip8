@@ -8,6 +8,8 @@ let FPS = 60
 let IPF = 10
 let cpu
 
+let lol = "lol" 
+
 const loop = function (n) {
 
     if(cpu.delayTimer > 0)
