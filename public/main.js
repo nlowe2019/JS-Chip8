@@ -1,4 +1,4 @@
-import { debug, settings_open, updateLog, updateRegisters, openSettings } from './debug.js';
+import { debug, settings_open, updateLog, updateLogDOM, updateRegisters, openSettings } from './debug.js';
 import { CPU, getInstruction, decodeInstruction } from './CHIP8.js';
 import { halt, setHalt } from './input.js';
 import { Display } from './display.js'

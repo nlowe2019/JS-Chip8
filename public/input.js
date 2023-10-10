@@ -30,6 +30,15 @@ $(".key").mouseup(function () {
     keyActive[($(this).attr('value'))] = false   
 })
 
+window.onload = function() {
+    //preload mouse down image here via Image()
+    $(".key").bind('touchstart', function(){
+        keyActive[($(this).attr('value'))] = true;
+    }).bind('touchend', function(){
+        keyActive[($(this).attr('value'))] = false;
+    });
+}
+
 export const keyVals = new Map([
     ['1', 0x1],
     ['2', 0x2],
