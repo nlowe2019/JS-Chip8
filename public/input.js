@@ -23,21 +23,13 @@ const keyPress = document.addEventListener('keypress', inputHandler.keyPressFunc
 const keyDown = document.addEventListener('keydown', inputHandler.keyDownFunc, false)
 const keyUp = document.addEventListener('keyup', inputHandler.keyUpFunc, false)
 
-$(".key").mousedown(function () {
-    keyActive[($(this).attr('value'))] = true
-})
-$(".key").mouseup(function () {
-    keyActive[($(this).attr('value'))] = false   
-})
+$(".key").bind('mousedown touchstart', function(e) {
+    keyActive[($(this).attr('value'))] = true;
+});
 
-window.onload = function() {
-    //preload mouse down image here via Image()
-    $(".key").bind('touchstart', function(){
-        keyActive[($(this).attr('value'))] = true;
-    }).bind('touchend', function(){
-        keyActive[($(this).attr('value'))] = false;
-    });
-}
+$(".key").bind('mouseup touchend', function(e) {
+    keyActive[($(this).attr('value'))] = false;
+});
 
 export const keyVals = new Map([
     ['1', 0x1],
