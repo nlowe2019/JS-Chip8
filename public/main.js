@@ -1,4 +1,4 @@
-import { debug, updateLog, updateRegisters } from './debug.js';
+import { debug, settings_open, updateLog, updateRegisters, openSettings } from './debug.js';
 import { CPU, getInstruction, decodeInstruction } from './CHIP8.js';
 import { halt, setHalt } from './input.js';
 import { Display } from './display.js'
@@ -65,6 +65,22 @@ rom_select.addEventListener('change', (event) => {
 })
 
 $(function() {
+    $("#settings").click(function () {
+        console.log("settings")
+        openSettings()
+        if(settings_open)
+        {
+            $('#settings').addClass('selected') 
+            $('#settings-ui').removeClass('invisible')
+            $('.render-btn-square').css("transition", "0.1s ease-out");
+        }
+        else
+        {
+            $('#settings').removeClass('selected')
+            $('#settings-ui').addClass('invisible')
+            $('.render-btn-square').css("transition", "0.0s");
+        }
+    })
     $("#pause").click(function () {
         console.log("pause")
         setHalt();
@@ -77,6 +93,13 @@ $(function() {
     })
     $('input[type=range]').on('input', function () {
         IPF = $(this).val()
+    })
+    $(".color-pick").click(function () {
+        let maincolor = '--main-color'
+        let selected_color = $(this).css('background-color')
+        $('.color-pick').removeClass('selected')
+        $(this).addClass('selected')
+        document.documentElement.style.setProperty(maincolor, selected_color)
     })
 })
 

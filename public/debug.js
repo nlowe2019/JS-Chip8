@@ -1,6 +1,7 @@
 let log = []
-export let debug = true
 let reg_base = 10;
+export let debug = true
+export let settings_open = false;
 
 $("#debug").click(function() {
     debug = !debug
@@ -25,6 +26,7 @@ $("#debug").click(function() {
         $("#tab1-content").addClass("selected")
     }
 })
+
 $(".base-btn").click(function() {
     reg_base = $(this).attr("value")
     $(".base-btn").removeClass("selected")
@@ -35,7 +37,7 @@ $(".base-btn").click(function() {
 export const updateRegisters = (registers, pc, I, delay, sound, op) => {
     for(let i=0; i<registers.length; i++) {
         try{
-            document.getElementById(`V${i.toString(16).toUpperCase()}_val`).innerHTML = registers[i].toString(reg_base);
+            document.getElementById(`V${i.toString(16).toUpperCase()}_val`).innerHTML = (reg_base == 2) ? registers[i].toString(reg_base).padStart(8, '0') : registers[i].toString(reg_base);
         } catch (err) {
             console.log(`V${i.toString(16)}`)
             console.log(err)
@@ -64,8 +66,13 @@ export const updateLog = (pc, opcode, instr, reg, I, delay, sound) => {
         log.pop()
     }
 }
+
 export const updateLogDOM = () => {
     if($('#tab2-content').hasClass("selected")) {
         document.getElementById("log").innerHTML = log.join('<br />')
     }
+}
+
+export const openSettings = () => {
+    settings_open = !settings_open;
 }

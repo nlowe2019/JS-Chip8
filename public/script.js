@@ -1,3 +1,4 @@
+import { settings } from "../app.js"
 import { debug, updateLogDOM } from "./debug.js"
 
 $(function() {
@@ -24,7 +25,7 @@ function resizeTabs () {
         $(x).height()
     )
     let max = Math.max(...arr)
-    $(".tab-content").each(function () { 
+    $(".tab-content").each(function () {
         $(this).height(max)
     })
     let t1h = $("#tab1-content").height()
