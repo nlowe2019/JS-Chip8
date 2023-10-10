@@ -9,18 +9,18 @@ $("#debug").click(function() {
     if(!debug) {
         $("div.debug").addClass("d-none")
         
-        $("div.tabs ul li").removeClass("selected")
+        $(".btn-block").removeClass("selected")
         $("div.tabs div.tab-content").removeClass("selected")
 
         $("#tab3").addClass("selected")
         $("#tab3-content").addClass("selected")
 
-        $("li.debug").addClass("inactive")
+        $(".btn-block.debug").addClass("inactive")
     } else {
-        $("li.debug").removeClass("inactive")
+        $(".btn-block.debug").removeClass("inactive")
         $("div.debug").removeClass("d-none")
 
-        $("div.tabs ul li").removeClass("selected")
+        $(".btn-block").removeClass("selected")
         $("div.tabs div.tab-content").removeClass("selected")
         $("#tab1").addClass("selected")
         $("#tab1-content").addClass("selected")

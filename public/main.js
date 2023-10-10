@@ -95,12 +95,16 @@ $(function() {
         IPF = $(this).val()
     })
     $(".color-pick").click(function () {
-        let maincolor = '--main-color'
+        let main_color_name = '--main-color'
         let selected_color = $(this).css('background-color')
         $('.color-pick').removeClass('selected')
         $(this).addClass('selected')
-        document.documentElement.style.setProperty(maincolor, selected_color)
+        document.documentElement.style.setProperty(main_color_name, selected_color)
         display.pixel_color = selected_color;
+        let svg_color = $(this).attr('value')
+        let svg_var_name = '--svg-default'
+        document.documentElement.style.setProperty(svg_var_name, 'var(' + svg_color + ')')
+        
     })
     $("#render-style").click(function () {
 
@@ -117,14 +121,14 @@ $(function() {
     })
     $(function() {
         resizeTabs()
-        $("div.tabs ul li").click(function () {
+        $(".btn-block").click(function () {
             if(!(!debug && $(this).hasClass("debug"))) {
                 let tabId = this.id
                 console.log(tabId)
                 let contentId = this.id + '-content'
     
-                $("div.tabs ul li").removeClass("selected")
-                $("div.tabs ul li#" + tabId).addClass("selected")
+                $(".btn-block").removeClass("selected")
+                $(".btn-block#" + tabId).addClass("selected")
     
                 $("div.tabs div.tab-content").removeClass("selected")
                 $("div.tabs div#" + contentId).addClass("selected")

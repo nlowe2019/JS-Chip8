@@ -1,12 +1,23 @@
 :root {
-    --main-color: #03fc41;
-    --main-green: #03fc41;
+    --main-color: #3cf96b;
+    --main-green: #3cf96b;
     --main-red: #fc3503;
     --main-blue: #0362fc;
     --main-yellow: #fcc603;
     --main-white: #ddd;
-    --main-purple: #7f03fc;
+    --main-purple: #ad12ea;
     --main-pink: #fc034e;
+
+    --svg-black: invert(0%) sepia(56%) saturate(89%) hue-rotate(243deg) brightness(1%) contrast(94%);
+    --svg-green: invert(77%) sepia(20%) saturate(1550%) hue-rotate(76deg) brightness(505%) contrast(95%);
+    --svg-red: invert(26%) sepia(60%) saturate(8794%) hue-rotate(-6deg) brightness(85%) contrast(128%);
+    --svg-blue: invert(26%) sepia(74%) saturate(11805%) hue-rotate(216deg) brightness(107%) contrast(98%);
+    --svg-yellow: invert(76%) sepia(53%) saturate(3089%) hue-rotate(4deg) brightness(311%) contrast(98%);
+    --svg-white: invert(96%) sepia(6%) saturate(63%) hue-rotate(222deg) brightness(4013%) contrast(73%);
+    --svg-purple: invert(20%) sepia(90%) saturate(3162%) hue-rotate(276deg) brightness(589%) contrast(118%);
+    --svg-pink: invert(11%) sepia(35%) saturate(25176%) hue-rotate(344deg) brightness(121%) contrast(98%);
+    --svg-default: var(--svg-green);
+    --svg-selected: var(--svg-black);
 }
 
 * {
@@ -97,11 +108,11 @@ button {
     background-color: var(--main-color);
 }
 
-.emu-btn svg{
-    filter: invert(54%) sepia(74%) saturate(2336%) hue-rotate(83deg) brightness(117%) contrast(124%);
+svg{
+    filter: var(--svg-default);
 }
-.emu-btn.selected svg{
-    filter: invert(0%) sepia(56%) saturate(89%) hue-rotate(243deg) brightness(10%) contrast(94%);
+.selected svg{
+    filter: var(--svg-selected);
 }
 
 input[type="range"] {
@@ -175,7 +186,7 @@ canvas {
 .tabs ul {
     display: flex;
 }
-.tabs ul li {
+.tabs .btn-block {
     cursor: pointer;
     user-select: none;
     padding: 0px 8px;
@@ -187,6 +198,11 @@ canvas {
     border: 6px solid #000;
     border-bottom: 1px solid var(--main-color);
 }
+.tabs .btn-block.selected {
+    background-color: var(--main-color);
+    transition: 0.1s; 
+}
+
 .tabs ul li.selected {
     color: #f00;
     border: 1px solid var(--main-color);
@@ -312,8 +328,8 @@ span {
     box-shadow: 0 1px 0 0 var(--main-color) !important;
     transform: translatey(3px) !important;
     transition: all 0.1s ease !important;
-    border-color: var(--main-color) !important;
-    color: var(--main-color) !important;
+    border-color: var(--main-color) !important; 
+    filter: brightness(60%);
 }
 
 *:focus {

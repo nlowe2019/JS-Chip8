@@ -1,5 +1,5 @@
 export class Display {
-    constructor(canvas, color="#03fc41") {
+    constructor(canvas, color="#3cf96b") {
         this.canvas = canvas
         this.ctx = canvas.getContext("2d")
         this.pixels = new Array(64*32).fill(false)
