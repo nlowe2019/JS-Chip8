@@ -100,7 +100,53 @@ $(function() {
         $('.color-pick').removeClass('selected')
         $(this).addClass('selected')
         document.documentElement.style.setProperty(maincolor, selected_color)
+        display.pixel_color = selected_color;
     })
+    $("#render-style").click(function () {
+
+        let style = $(this).hasClass('selected') ? 'solid' : 'grid'
+        if(style == 'solid') {
+            $(this).removeClass('selected')
+            style = 'grid'
+        }
+        else {
+            $(this).addClass('selected')
+            style = 'solid'
+        }
+        display.render_style = style
+    })
+    $(function() {
+        resizeTabs()
+        $("div.tabs ul li").click(function () {
+            if(!(!debug && $(this).hasClass("debug"))) {
+                let tabId = this.id
+                console.log(tabId)
+                let contentId = this.id + '-content'
+    
+                $("div.tabs ul li").removeClass("selected")
+                $("div.tabs ul li#" + tabId).addClass("selected")
+    
+                $("div.tabs div.tab-content").removeClass("selected")
+                $("div.tabs div#" + contentId).addClass("selected")
+            }
+            updateLogDOM()
+        })
+    
+        $(window).resize(resizeTabs)
+    })
+    
+    function resizeTabs () {
+        let arr = $("div.tab-content").toArray().map(x =>
+            $(x).height()
+        )
+        let max = Math.max(...arr)
+        $(".tab-content").each(function () {
+            $(this).height(max)
+        })
+        let t1h = $("#tab1-content").height()
+        $('#tab3-content').height(t1h)
+    }
+    
 })
 
 fetchRom('/opcode test.ch8')

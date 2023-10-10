@@ -147,15 +147,18 @@ input[type=range]::-moz-range-progress {
     border: 5px solid var(--main-color);
 }
 
+@media screen and (min-width: 1200px) {
+    #canvas-outer {
+        padding-left: 64px;
+        padding-right: 64px;
+    }
+}
+
 #canvas-outer {
-    border: 1px var(--main-color) solid;
-    border-radius: 2px;
     margin-bottom: 16px;
 }
 canvas {
-    
-    border-radius: 5px;
-    background-color: black;
+    box-shadow: 0 0 0 6px var(--main-color); 
     width: 100%;
 }
 
@@ -181,7 +184,7 @@ canvas {
     background-color: black;
     transition: 0.1s;
     border-radius: 2px 2px 0px 0px;
-    border: 1px solid #000;
+    border: 6px solid #000;
     border-bottom: 1px solid var(--main-color);
 }
 .tabs ul li.selected {
@@ -288,7 +291,7 @@ span {
     color: white;
     aspect-ratio: 1/1;
     border: 2px solid var(--main-color);
-    border-top:#000 solid 0px;
+    border-top:var(--main-color) solid 1px;
     margin: 4px;
     box-shadow: 0 4px 0 0 var(--main-color);
 }
@@ -299,18 +302,18 @@ span {
 	background-color: #111;
 }
 .key:active {
-    box-shadow: 0 1px 0 0 #f00;
+    box-shadow: 0 1px 0 0 var(--main-color);
     transform: translatey(3px);
-    border-color: #f00;
-    box-shadow: 0 4px 0 0 #f00;
+    border-color: var(--main-color);
+    box-shadow: 0 1px 0 0 var(--main-color);
 }
 .key-active {
 	background-color: #111 !important;
-    box-shadow: 0 1px 0 0 #f00 !important;
+    box-shadow: 0 1px 0 0 var(--main-color) !important;
     transform: translatey(3px) !important;
     transition: all 0.1s ease !important;
-    border-color: #f00 !important;
-    color: #f00 !important;
+    border-color: var(--main-color) !important;
+    color: var(--main-color) !important;
 }
 
 *:focus {
@@ -351,7 +354,7 @@ span {
     border: 3px solid var(--main-color);
 }
 
-.render-btn-square, #render-style.selected:hover .render-btn-square  {
+.render-btn-square {
     margin-left: 2px;
     margin-right: 2px;
     margin-top: 2px;
@@ -360,11 +363,8 @@ span {
     transition: 0.1s ease-out;
 }
 
-#render-style:hover .render-btn-square, #render-style.selected .render-btn-square {
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+#render-style.selected .render-btn-square {
+    margin: -1px;
     border-radius: 1px;
     transition: 0.1s ease-out;
 }

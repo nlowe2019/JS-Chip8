@@ -10,7 +10,6 @@ html
         script(src="https://kit.fontawesome.com/ddede46750.js" crossorigin="anonymous")
         link(rel='stylesheet', href='style.css')
         script(type="module" src="jquery-3.6.1.min.js")
-        script(type="module" src="script.js")
         script(type="module" src="main.js")
         script(type="module" src="debug.js")
         script(type="module" src="input.js")
@@ -52,7 +51,7 @@ html
                             input(class="h-100" type="range" min="1" max="100" value="50" class="slider" id="game-volume")
                         div(class="col-auto mt-2")
                             <div class="btn-group w-100 my-2 justify-content-evenly" role="group" aria-label="Basic example">
-                                button(id="render-style" class="container-fluid")
+                                button(id="render-style" class="container-fluid selected")
                                     div(class="row p-0 justify-content-center")
                                         div(class="col-2 p-0 render-btn-square" style="height: 8px; width: 8px; background-color: var(--main-color)")
                                         div(class="col-2 p-0 render-btn-square" style="height: 8px; width: 8px; background-color: var(--main-color)")

@@ -37,14 +37,19 @@ $(".base-btn").click(function() {
 export const updateRegisters = (registers, pc, I, delay, sound, op) => {
     for(let i=0; i<registers.length; i++) {
         try{
-            document.getElementById(`V${i.toString(16).toUpperCase()}_val`).innerHTML = (reg_base == 2) ? registers[i].toString(reg_base).padStart(8, '0') : registers[i].toString(reg_base);
+            if(reg_base == 2)
+                document.getElementById(`V${i.toString(16).toUpperCase()}_val`).innerHTML = registers[i].toString(reg_base).padStart(8, '0')
+            else if(reg_base == 16)
+                document.getElementById(`V${i.toString(16).toUpperCase()}_val`).innerHTML = ('00' + registers[i].toString(reg_base)).substr(-2)
+            else
+                document.getElementById(`V${i.toString(16).toUpperCase()}_val`).innerHTML = registers[i].toString(reg_base);
         } catch (err) {
             console.log(`V${i.toString(16)}`)
             console.log(err)
         }
     }
-    document.getElementById('pc_val').innerHTML = '0x' + ('000' + pc.toString(16)).substr(-3);
-    document.getElementById('index_val').innerHTML = '0x' + ('000' + I.toString(16)).substr(-3);
+    document.getElementById('pc_val').innerHTML = '0x' + ('0000' + pc.toString(16)).substr(-4);
+    document.getElementById('index_val').innerHTML = '0x' + ('0000' + I.toString(16)).substr(-4);
     document.getElementById('delay_val').innerHTML = delay;
     document.getElementById('sound_val').innerHTML = sound;
     document.getElementById('opcode_val').innerHTML = '0x' + ('0000' + op.toString(16)).substr(-4);;
