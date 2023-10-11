@@ -10,6 +10,7 @@
     --main-pink: #fc034e;
 
     --svg-black: invert(0%) sepia(56%) saturate(89%) hue-rotate(243deg) brightness(1%) contrast(94%);
+    --svg-grey: invert(10%) sepia(56%) saturate(89%) hue-rotate(243deg) brightness(90%) contrast(94%);
     --svg-green: invert(77%) sepia(20%) saturate(1750%) hue-rotate(79deg) brightness(485%) contrast(95%);
     --svg-red: invert(26%) sepia(60%) saturate(8794%) hue-rotate(-6deg) brightness(85%) contrast(128%);
     --svg-blue: invert(26%) sepia(74%) saturate(11805%) hue-rotate(216deg) brightness(107%) contrast(98%);
@@ -31,7 +32,7 @@
     /*border: 1px solid red;*/
 }
 body {
-    background-color: #000;
+    background-color: #040404;
 }
 button {
     background-color: #000;
@@ -76,6 +77,20 @@ button {
     border-radius: 10px;
 }
 
+#logo-bg {
+    background-color: rgb(20, 20, 20);
+    width:100%; 
+    border-bottom: 3px solid var(--main-color);
+}
+#logo {
+    
+    z-index: 5;
+}
+
+#logo-bg #logo-shadow {
+    filter: var(--svg-black) !important;
+    position:absolute;
+} 
 
 @media screen and (max-width: 760px) {
     #roms-parent {

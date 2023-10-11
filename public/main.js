@@ -169,7 +169,7 @@ function resizeTabs () {
     $('#tab3-content').height(t1h)
 }
 
-fetchRom('/opcode test.ch8')
+fetchRom('/CHIP-8 Logo.ch8')
 setInterval(() => {
     if(!halt)
         loop(IPF)

@@ -1,7 +1,7 @@
 doctype html
 html
     head
-        title html time
+        title Chip-8
         meta(charset="utf-8")
         meta(name="viewport" content="width=device-width, initial-scale=1")
         meta(name="google" content="notranslate")
@@ -21,9 +21,12 @@ html
         script(type="module" src="sound.js")
     
     body
-        div(class="px-2")
-            h1(class="fw-bold header") CHIP-8
-        div(class="container-fluid main py-1")
+        div(id='logo-bg' class="d-flex justify-content-center")
+            svg(id="logo" ixmlns="http://www.w3.org/2000/svg" height="16vh" viewBox="0 28 90 23")
+                path(style="fill: white;" d="M12,32h7v1h-7v-1Zm7,3h-9v-1h9v1Zm-9,1h3v1h-3v-1Zm0,2h3v1h-3v-1Zm0,2h3v1h-3v-1Zm0,2h3v1h-3v-1Zm0,2h9v1h-9v-1Zm2,2h7v1h-7v-1ZM23,32h5v1h-5v-1Zm0,2h5v1h-5v-1Zm8-2h5v1h-5v-1Zm0,2h5v1h-5v-1Zm-7,2h3v1h-3v-1Zm8,0h3v1h-3v-1Zm-8,2h11v1h-11v-1Zm0,2h11v1h-11v-1Zm0,2h3v1h-3v-1Zm11,0v1h-3v-1h3Zm-4,2h5v1h-5v-1Zm-3,1h-5v-1h5v1Zm0,1v1h-5v-1h5Zm3,0h5v1h-5v-1Zm18,0h5v1h-5v-1Zm-9,0h5v1h-5v-1Zm0-14h5v1h-5v-1Zm0,12h5v1h-5v-1Zm0-10h5v1h-5v-1Zm1,8h3v1h-3v-1Zm0-6h3v1h-3v-1Zm0,4h3v1h-3v-1Zm0-2h3v1h-3v-1Zm8,6h5v1h-5v-1Zm1-2h3v1h-3v-1Zm8-2v1h-8v-1h8Zm-8-2h9v1h-9v-1Zm0-2h3v1h-3v-1Zm9,1h-3v-1h3v1ZM49,34h10v1h-10v-1Zm9-2v1h-9v-1h9Zm4,6h5v1h-5v-1Zm0,2h5v1h-5v-1Zm8-2h10v1h-10v-1Zm1,2h8v1h-8v-1Zm-1,2h3v1h-3v-1Zm7,0h3v1h-3v-1Zm-7,2h10v1h-10v-1Zm0-8h3v1h-3v-1Zm10,1h-3v-1h3v1ZM70,34h10v1h-10v-1Zm2-2h6v1h-6v-1Zm6,14v1h-6v-1h6Z")
+            svg(id="logo-shadow"  ixmlns="http://www.w3.org/2000/svg" height="16vh" viewBox="-11 -3 90 22.5")
+                path(style="fill: black;" d="M3,1h7v4h-6v8h6v4h-7v-2h-2L1,3h2v-2ZM14,1h5v4h-1v2h5v-2h-1v-4h5v4h-1v8h1v4h-5v-4h1v-2h-5v2h1v4h-5v-4h1v-8h-1v-4ZM31,1h5v4h-1v8h1v4h-5v-4h1v-8h-1v-4Zm9,12h1v-8h-1v-4h9v2h1v6h-1v2h-5v2h1v4h-5v-4ZM53,7h5v4h-5v-4Zm8,4h1v-2h-1v-6h2v-2h6v2h2v6h-1v2h1v4h-2v2h-6v-2h-2v-4ZM44,7h3v-2h-3v2ZM64,7h4v-2h-4v2Zm0,4v2h4v-2h-4Z")
+        div(class="container-fluid main mt-4 py-1")
             div(class="row w-100 mx-0 my-1")
                 div(id="roms-parent" class="col d-flex justify-content-start")
                     select(name="roms" id="roms" class="decorated h-100" style="max-width: 300px;")
