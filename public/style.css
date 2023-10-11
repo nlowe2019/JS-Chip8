@@ -1,6 +1,7 @@
 :root {
-    --main-color: #3cf96b;
-    --main-green: #3cf96b;
+    --background-color: #080808;
+    --main-color: #23f057;
+    --main-green: #23f057;
     --main-red: #fc3503;
     --main-blue: #0362fc;
     --main-yellow: #fcc603;
@@ -9,7 +10,7 @@
     --main-pink: #fc034e;
 
     --svg-black: invert(0%) sepia(56%) saturate(89%) hue-rotate(243deg) brightness(1%) contrast(94%);
-    --svg-green: invert(77%) sepia(20%) saturate(1550%) hue-rotate(76deg) brightness(505%) contrast(95%);
+    --svg-green: invert(77%) sepia(20%) saturate(1750%) hue-rotate(79deg) brightness(485%) contrast(95%);
     --svg-red: invert(26%) sepia(60%) saturate(8794%) hue-rotate(-6deg) brightness(85%) contrast(128%);
     --svg-blue: invert(26%) sepia(74%) saturate(11805%) hue-rotate(216deg) brightness(107%) contrast(98%);
     --svg-yellow: invert(76%) sepia(53%) saturate(3089%) hue-rotate(4deg) brightness(311%) contrast(98%);
@@ -18,6 +19,11 @@
     --svg-pink: invert(11%) sepia(35%) saturate(25176%) hue-rotate(344deg) brightness(121%) contrast(98%);
     --svg-default: var(--svg-green);
     --svg-selected: var(--svg-black);
+}
+
+@font-face {
+    font-family: font-primary;
+    src: url(/assets/Minercraftory.ttf);
 }
 
 * {
@@ -70,27 +76,44 @@ button {
     border-radius: 10px;
 }
 
+
+@media screen and (max-width: 760px) {
+    #roms-parent {
+        margin-left: -2px;  
+    }
+}
+@media screen and (min-width: 976px) {
+    #roms-parent {
+        margin-left: 10px;  
+    }
+}
+
 #roms {
-    margin-left: 5px;
+    font-weight: 200;
+    font-size: x-large;
+    font-family: font-primary, 'Courier New', Courier, monospace,  Helvetica !important;
+    margin-left: 0px; 
     border-radius: 3px;
     border: 1px var(--main-color) solid;
     background-color: #000;
     color: var(--main-color);
+    border-radius: 1px;
+    border-width: 3px;
+    width: 100%;
 } 
 #roms:hover {
-    color: #f00;
-    border-color: #f00;
+    background-color: #222;
 } 
 .opt {
     background-color: #000;
-    color: var(--main-color);
+    color: var(--main-color); 
 }
 
 .emu-btn {
     text-align: center;
     display: flex;
     border: 3px solid var(--main-color);
-    border-radius: 8px;
+    border-radius: 4px;
 
     transition: all 0.15s ease;
     box-shadow: 0 1px 0 0 var(--main-color);
@@ -99,7 +122,7 @@ button {
     box-shadow: 0 1px 0 0 var(--main-color);
     border-color: var(--main-color);
     color: var(--main-color);
-    background-color: rgba(0, 255, 47, 0.1)
+    background-color: rgba(51, 51, 51, 0.803)
 }
 .emu-btn:active, .emu-btn.selected {
     transition: all 0.05s ease;
@@ -110,9 +133,14 @@ button {
 
 svg{
     filter: var(--svg-default);
+    shape-rendering: crispEdges;
 }
 .selected svg{
     filter: var(--svg-selected);
+}
+
+#step-svg:active {
+    filter: var(--svg-selected); 
 }
 
 input[type="range"] {
@@ -160,8 +188,15 @@ input[type=range]::-moz-range-progress {
 
 @media screen and (min-width: 1200px) {
     #canvas-outer {
-        padding-left: 64px;
-        padding-right: 64px;
+        padding-left: 48px;
+        padding-right: 48px;
+        margin-right: 80px;
+    }
+}
+@media screen and (min-width: 976px) {
+    #canvas-outer {
+        padding-left: 24px;
+        padding-right: 24px;
     }
 }
 
@@ -186,22 +221,6 @@ canvas {
 .tabs ul {
     display: flex;
 }
-.tabs .btn-block {
-    cursor: pointer;
-    user-select: none;
-    padding: 0px 8px;
-    display: inline;
-    color: var(--main-color);
-    background-color: black;
-    transition: 0.1s;
-    border-radius: 2px 2px 0px 0px;
-    border: 6px solid #000;
-    border-bottom: 1px solid var(--main-color);
-}
-.tabs .btn-block.selected {
-    background-color: var(--main-color);
-    transition: 0.1s; 
-}
 
 .tabs ul li.selected {
     color: #f00;
@@ -214,7 +233,7 @@ canvas {
     transition: 0.5s;
     filter: brightness(60%);
 }
-.tabs ul li.inactive {
+.btn-block.inactive {
     filter: brightness(60%);
 }
 span {
@@ -227,7 +246,7 @@ span {
     display: none;
     background-color: black;
     color: white;
-    border: 1px solid var(--main-color);
+    border: 0px solid var(--main-color);
     border-radius: 2px;
     border-top: 0px;
     padding: 8px;
@@ -306,10 +325,11 @@ span {
     padding-left: 6px;
     color: white;
     aspect-ratio: 1/1;
-    border: 2px solid var(--main-color);
+    border: 4px solid var(--main-color);
     border-top:var(--main-color) solid 1px;
     margin: 4px;
     box-shadow: 0 4px 0 0 var(--main-color);
+    border-radius: 2px !important;
 }
 .key:hover{
     color: #aaa;
@@ -371,16 +391,72 @@ span {
 }
 
 .render-btn-square {
-    margin-left: 2px;
-    margin-right: 2px;
-    margin-top: 2px;
-    margin-bottom: 2px;
+    margin: 2px;
     border-radius: 1px;
     transition: 0.1s ease-out;
+    transition-property: margin;
 }
 
 #render-style.selected .render-btn-square {
     margin: -1px;
     border-radius: 1px;
     transition: 0.1s ease-out;
+    transition-property: margin;
 }
+
+#tab-btns.btn-group { 
+    justify-content: space-around !important; 
+    margin-top: 4px; 
+}
+#tab-btns.btn-group .btn-block { 
+    width: 100%;
+    padding: 8px 0px 8px 0px;
+    margin-left: -2px;
+    margin-right: -2px;
+}
+
+#tab-btns .btn-block svg { 
+    height: 3em;
+    width: 3em; 
+} 
+
+.tabs .btn-block {
+    cursor: pointer; 
+    margin: 12px;
+    display: inline;
+    color: var(--main-color);
+    background-color: var(--background-color);
+    transition: 0.1s;
+    border: 5px solid var(--main-color);
+}
+.tabs .btn-block.selected {
+    background-color: var(--main-color);
+    transition: 0.1s; 
+}
+.tabs .btn-block:hover svg
+{
+    transition: 0.2s ease-out;
+    transition-property: margin-top;
+    margin-top: -6px;
+}
+
+.top-bar-right {
+    float: right;
+    justify-content: right;
+}
+@media (min-width:576px) {
+    
+    .top-bar-right {
+        margin-right: 16px;
+    }
+}
+
+
+@media (max-width:576px) {
+    
+    .top {
+        margin-left: 2px !important;
+        margin-right: 2px !important;
+    }
+}
+

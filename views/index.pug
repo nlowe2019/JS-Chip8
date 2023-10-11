@@ -24,24 +24,23 @@ html
         div(class="px-2")
             h1(class="fw-bold header") CHIP-8
         div(class="container-fluid main py-1")
-            div(class="row mx-1 my-1")
-                div(class="col-auto")
-                    label(for="roms" class="fw-bold" style="color: var(--main-color);") ROM:
-                    select(name="roms" id="roms" class="decorated h-100" style="")
+            div(class="row w-100 mx-0 my-1")
+                div(id="roms-parent" class="col d-flex justify-content-start")
+                    select(name="roms" id="roms" class="decorated h-100" style="max-width: 300px;")
                         option(value="" selected disabled hidden)
                         each rom in roms
-                            option(class="opt" value=rom)= rom
-                div(class="col-auto")
-                    button(id="pause" class="h-100 emu-btn") Pause
-                div(class="col-auto")
-                    button(id="step" class="h-100 emu-btn") Step
-                div(class="col")
-                div(class="col-auto")
-                    button(id="debug" class="p-1 h-100 emu-btn selected")
-                        svg(xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 512 512")
-                            path(style="fill: white" d="M256 0c53 0 96 43 96 96v3.6c0 15.7-12.7 28.4-28.4 28.4H188.4c-15.7 0-28.4-12.7-28.4-28.4V96c0-53 43-96 96-96zM41.4 105.4c12.5-12.5 32.8-12.5 45.3 0l64 64c.7 .7 1.3 1.4 1.9 2.1c14.2-7.3 30.4-11.4 47.5-11.4H312c17.1 0 33.2 4.1 47.5 11.4c.6-.7 1.2-1.4 1.9-2.1l64-64c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-64 64c-.7 .7-1.4 1.3-2.1 1.9c6.2 12 10.1 25.3 11.1 39.5H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H416c0 24.6-5.5 47.8-15.4 68.6c2.2 1.3 4.2 2.9 6 4.8l64 64c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0l-63.1-63.1c-24.5 21.8-55.8 36.2-90.3 39.6V240c0-8.8-7.2-16-16-16s-16 7.2-16 16V479.2c-34.5-3.4-65.8-17.8-90.3-39.6L86.6 502.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l64-64c1.9-1.9 3.9-3.4 6-4.8C101.5 367.8 96 344.6 96 320H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H96.3c1.1-14.1 5-27.5 11.1-39.5c-.7-.6-1.4-1.2-2.1-1.9l-64-64c-12.5-12.5-12.5-32.8 0-45.3z")
-                div(class="col-auto")
-                    button(id="settings" class="p-1 h-100 emu-btn")
+                            option(class="opt" value=rom)=rom
+                div(class="col gx-0 mr-0 top-bar-right btn-group float-end")
+                    button(id="pause" class="mx-2  emu-btn top-btn")
+                        svg(id="pause-svg" ixmlns="http://www.w3.org/2000/svg" height="2em" viewBox="72 -16 330 330")
+                            path(style="fill: white;" d="M200,300h-60v-240h60v240ZM260,60h60v240h-60v-240Z")
+                    button(id="step" class="mx-2  emu-btn top-btn") 
+                        svg(id="step-svg" ixmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 -24 300 300")
+                            path(style="fill: white;"  d="M300,120v30h-30v30h-30v30h-30v30h-30v-60h-150v-90h150v-60h30v30h30v30h30v30h30Z" transform="translate(-15 15)")
+                    button(id="debug" class="mx-2 p-1 emu-btn top-btn selected")
+                        svg(xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 300 300")
+                            path(style="fill: white"  d="M75,120h150v30h60v30h-60v30h30v30h-45v30h-45v-120h-30v120h-45v-30h-45v-30h30v-30h-60v-30h60v-30Zm0,0h-30v-30h30v30ZM15,60h30v30h-30v-30ZM255,90v30h-30v-30h30Zm0-30h30v30h-30v-30Zm0,180h30v30h-30v-30ZM15,240h30v30h-30v-30ZM90,39.96476h30v-30h60v30h30v60h-120v-60Z" stroke="#fff")
+                    button(id="settings" class="mx-2 p-1 h-100 emu-btn top-btn")
                         svg(id="settings-svg" ixmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 512 512")
                             path(style="fill: white" d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z")
                     div(id="settings-ui" class="px-4 py-3 invisible")
@@ -77,9 +76,9 @@ html
             div(class="row mx-1 mt-3")
                 div(id="canvas-outer" class="col mb-3 py-1 center")
                     canvas(id="canvas" class="center-y p-2" width="1024px")
-                div(class="mb-3 col-lg-5 col-sm-6 col-xs-12 px-0")
+                div(class="mb-3 col-xl-5 col-lg-4 col-sm-12 col-xs-12 px-0")
                     div(class="tabs h-100  px-1 row")
-                        div(class="col-auto tab-content debug selected justify-content-evenly overflow-auto" id="tab1-content")
+                        div(class="col-sm-9 col-xs-12 tab-content debug selected justify-content-evenly overflow-auto" id="tab1-content")
                             div(class="d-flex justify-content-between register-row")
                                 div(class="d-flex justify-content-between col-3") 
                                     span(class="register-label") V0: 
@@ -158,9 +157,9 @@ html
                                 button(value="2" class="base-btn" style="border-radius: 40% 0% 0% 40%;") 2
                                 button(value="10" class="base-btn selected") 10
                                 button(value="16" class="base-btn" style="border-radius: 0% 40% 40% 0%;") 16
-                        div(class="tab-content debug col-auto" id="tab2-content")
+                        div(class="col-sm-9 col-xs-12 tab-content debug" id="tab2-content")
                             p(id="log")
-                        div(class="tab-content col-auto flex-row align-items-center justify-content-evenly overflow-hidden" id="tab3-content")
+                        div(class="col-sm-9 col-xs-12 tab-content flex-row align-items-center justify-content-evenly overflow-hidden" id="tab3-content")
                             div(id="keypad" class="justify-content-between" style="")
                                 div(class="d-flex key-row")
                                     button(id="key-1" class="key emu-btn" value="1") 1
@@ -183,15 +182,15 @@ html
                                     button(id="key-c" class="key emu-btn" value="c") B
                                     button(id="key-v" class="key emu-btn" value="v") F
 
-                        div(class="btn-group-vertical justify-content-between d-flex align-items-stretch col-3") 
+                        div(id="tab-btns" class="btn-group-vertical justify-content-between d-flex align-items-stretch col-sm-3 col-xs-12") 
                             button(id="tab1" class="h-100 debug btn-block selected")
-                                svg(id="register-svg" ixmlns="http://www.w3.org/2000/svg" height="3em" viewBox="0 0 320 512")
+                                svg(id="register-svg" ixmlns="http://www.w3.org/2000/svg"  viewBox="0 0 320 512")
                                     path(style="fill: white" d="M160 0c17.7 0 32 14.3 32 32V67.7c1.6 .2 3.1 .4 4.7 .7c.4 .1 .7 .1 1.1 .2l48 8.8c17.4 3.2 28.9 19.9 25.7 37.2s-19.9 28.9-37.2 25.7l-47.5-8.7c-31.3-4.6-58.9-1.5-78.3 6.2s-27.2 18.3-29 28.1c-2 10.7-.5 16.7 1.2 20.4c1.8 3.9 5.5 8.3 12.8 13.2c16.3 10.7 41.3 17.7 73.7 26.3l2.9 .8c28.6 7.6 63.6 16.8 89.6 33.8c14.2 9.3 27.6 21.9 35.9 39.5c8.5 17.9 10.3 37.9 6.4 59.2c-6.9 38-33.1 63.4-65.6 76.7c-13.7 5.6-28.6 9.2-44.4 11V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V445.1c-.4-.1-.9-.1-1.3-.2l-.2 0 0 0c-24.4-3.8-64.5-14.3-91.5-26.3c-16.1-7.2-23.4-26.1-16.2-42.2s26.1-23.4 42.2-16.2c20.9 9.3 55.3 18.5 75.2 21.6c31.9 4.7 58.2 2 76-5.3c16.9-6.9 24.6-16.9 26.8-28.9c1.9-10.6 .4-16.7-1.3-20.4c-1.9-4-5.6-8.4-13-13.3c-16.4-10.7-41.5-17.7-74-26.3l-2.8-.7 0 0C119.4 279.3 84.4 270 58.4 253c-14.2-9.3-27.5-22-35.8-39.6c-8.4-17.9-10.1-37.9-6.1-59.2C23.7 116 52.3 91.2 84.8 78.3c13.3-5.3 27.9-8.9 43.2-11V32c0-17.7 14.3-32 32-32z")
 
                             button(id="tab2" class="h-100 debug btn-block")
-                                svg(id="settings-svg" ixmlns="http://www.w3.org/2000/svg" height="3em" viewBox="0 0 448 512")
+                                svg(id="settings-svg" ixmlns="http://www.w3.org/2000/svg"   viewBox="0 0 448 512")
                                     path(style="fill: white" d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z")
 
                             button(id="tab3" class="h-100 btn-block ")
-                                svg(id="settings-svg" ixmlns="http://www.w3.org/2000/svg" height="3em" viewBox="0 0 640 512")
+                                svg(id="settings-svg" ixmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512")
                                     path(style="fill: white" d="M192 64C86 64 0 150 0 256S86 448 192 448H448c106 0 192-86 192-192s-86-192-192-192H192zM496 168a40 40 0 1 1 0 80 40 40 0 1 1 0-80zM392 304a40 40 0 1 1 80 0 40 40 0 1 1 -80 0zM168 200c0-13.3 10.7-24 24-24s24 10.7 24 24v32h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H216v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h32V200z")

@@ -12,7 +12,7 @@ app.set("views", path.join(__dirname, "views"))
 app.set("view engine", "pug")
 
 app.get("/", async (req, res) => {
-    res.render("pugtest", roms= await romList())
+    res.render("index", roms= await romList())
 })
 
 app.listen(port, () => {

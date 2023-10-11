@@ -71,14 +71,12 @@ $(function() {
         if(settings_open)
         {
             $('#settings').addClass('selected') 
-            $('#settings-ui').removeClass('invisible')
-            $('.render-btn-square').css("transition", "0.1s ease-out");
+            $('#settings-ui').removeClass('invisible') 
         }
         else
         {
             $('#settings').removeClass('selected')
-            $('#settings-ui').addClass('invisible')
-            $('.render-btn-square').css("transition", "0.0s");
+            $('#settings-ui').addClass('invisible') 
         }
     })
     $("#pause").click(function () {
@@ -119,7 +117,7 @@ $(function() {
         }
         display.render_style = style
     })
-    $(function() {
+    
         resizeTabs()
         $(".btn-block").click(function () {
             if(!(!debug && $(this).hasClass("debug"))) {
@@ -137,21 +135,39 @@ $(function() {
         })
     
         $(window).resize(resizeTabs)
-    })
-    
-    function resizeTabs () {
-        let arr = $("div.tab-content").toArray().map(x =>
-            $(x).height()
-        )
-        let max = Math.max(...arr)
-        $(".tab-content").each(function () {
-            $(this).height(max)
-        })
-        let t1h = $("#tab1-content").height()
-        $('#tab3-content').height(t1h)
-    }
-    
 })
+
+$(window).resize(function() {
+    if ($(window).width() >= 576) {
+        $('#tab-btns').removeClass('btn-group');
+        $('#tab-btns').addClass('btn-group-vertical');
+    } else {
+        $('#tab-btns').addClass('btn-group');
+        $('#tab-btns').removeClass('btn-group-vertical');
+    }
+})
+$(document).ready(function() {
+    if ($(window).width() >= 576) {
+        $('#tab-btns').removeClass('btn-group');
+        $('#tab-btns').addClass('btn-group-vertical');
+    } else {
+        $('#tab-btns').addClass('btn-group');
+        $('#tab-btns').removeClass('btn-group-vertical');
+    }
+    $(window).resize(resizeTabs)
+})
+
+function resizeTabs () {
+    let arr = $("div.tab-content").toArray().map(x =>
+        $(x).height()
+    )
+    let max = Math.max(...arr)
+    $(".tab-content").each(function () {
+        $(this).height(max)
+    })
+    let t1h = $("#tab1-content").height()
+    $('#tab3-content').height(t1h)
+}
 
 fetchRom('/opcode test.ch8')
 setInterval(() => {
