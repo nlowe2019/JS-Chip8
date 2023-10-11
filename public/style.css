@@ -34,6 +34,14 @@
 body {
     background-color: #040404;
 }
+
+@media screen and (min-width: 1200px) {
+    .main {
+        padding-left: 50px;
+        padding-right: 50px;  
+    }
+}
+
 button {
     background-color: #000;
     color: var(--main-color);
@@ -91,6 +99,22 @@ button {
     filter: var(--svg-black) !important;
     position:absolute;
 } 
+
+
+@media screen and (max-width: 576px) {
+    #logo-shadow {
+        visibility: hidden;
+    }
+    .main {
+        margin-top: 8px !important;
+    }
+    #logo-bg {
+        background-color: #111; 
+    }
+    #logo {
+        height: 12vh;
+    }
+}
 
 @media screen and (max-width: 760px) {
     #roms-parent {
@@ -205,8 +229,9 @@ input[type=range]::-moz-range-progress {
     #canvas-outer {
         padding-left: 48px;
         padding-right: 48px;
-        margin-right: 80px;
+        margin-right: 40px;
     }
+    
 }
 @media screen and (min-width: 976px) {
     #canvas-outer {
@@ -259,7 +284,7 @@ span {
     margin: 0px 0px 0px 0px;
     font-family: 'lucida console';
     display: none;
-    background-color: black;
+    background-color: #040404;
     color: white;
     border: 0px solid var(--main-color);
     border-radius: 2px;
@@ -316,9 +341,7 @@ span {
     flex-wrap: wrap;
 }
 
-#keypad {
-    border: 2px solid #000;
-    background-color: #000;
+#keypad { 
     display: flex;
     flex-direction: column;
     flex: 1 1 ;
@@ -373,9 +396,9 @@ span {
 
 #settings-ui {
     z-index: 5;
-    position: fixed; 
-    right: 78px;
-    top: 64px; 
+    position: absolute; 
+    right: 64px;
+    top: 20px; 
     background-color: #fff; 
     height: 350px; 
     width: 240px;
