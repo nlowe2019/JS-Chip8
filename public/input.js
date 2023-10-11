@@ -24,11 +24,11 @@ const keyDown = document.addEventListener('keydown', inputHandler.keyDownFunc, f
 const keyUp = document.addEventListener('keyup', inputHandler.keyUpFunc, false)
 
 $(".key").bind('mousedown touchstart', function(e) {
-    keyActive[($(this).attr('value'))] = true;
+    keyActive[($(e.target).attr('value'))] = true;
 });
 
 $(".key").bind('mouseup touchend', function(e) {
-    keyActive[($(this).attr('value'))] = false;
+    keyActive[($(e.target).attr('value'))] = false;
 });
 
 export const keyVals = new Map([
