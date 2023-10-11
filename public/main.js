@@ -18,7 +18,7 @@ const loop = function (n) {
     for (let i = 0; i < n; i++) {
         let op = getInstruction(cpu);
 
-        let log_vals = decodeInstruction(cpu, op, display.pixels);
+        let log_vals = decodeInstruction(cpu, op, display.frame_buffer_main);
 
         if(debug)
             updateRegisters(cpu.getRegisters(), cpu.getPC(), cpu.getI(), cpu.getDelay(), cpu.getSound(), getInstruction(cpu));
@@ -60,7 +60,8 @@ rom_select.addEventListener('change', (event) => {
     let halt_on_load = halt
     if(!halt)
         setHalt()
-    display.pixels.fill(false)
+    display.frame_buffer_main.fill(false)
+    display.frame_buffer_second.fill(false)
     fetchRom('/' + rom + '.ch8', halt_on_load)
 })
 
