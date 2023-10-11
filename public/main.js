@@ -155,6 +155,13 @@ $(document).ready(function() {
         $('#tab-btns').removeClass('btn-group-vertical');
     }
     $(window).resize(resizeTabs)
+
+        
+    fetchRom('/CHIP-8 Logo.ch8')
+    setInterval(() => {
+        if(!halt)
+            loop(IPF)
+    }, 1000/FPS)
 })
 
 function resizeTabs () {
@@ -168,9 +175,3 @@ function resizeTabs () {
     let t1h = $("#tab1-content").height()
     $('#tab3-content').height(t1h)
 }
-
-fetchRom('/CHIP-8 Logo.ch8')
-setInterval(() => {
-    if(!halt)
-        loop(IPF)
-}, 1000/FPS)
