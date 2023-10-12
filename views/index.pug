@@ -30,7 +30,7 @@ html
             div(class="row w-100 mx-0 my-1")
                 div(id="roms-parent" class="col d-flex justify-content-start")
                     select(name="roms" id="roms" class="decorated h-100" style="max-width: 300px;")
-                        option(value="" selected disabled hidden)
+                        option(value="" selected disabled hidden) Select ROM
                         each rom in roms
                             option(class="opt" value=rom)=rom
                 div(class="col gx-0 mr-0 top-bar-right btn-group float-end")
@@ -76,7 +76,7 @@ html
                                 button(class="p-1 col-2 color-pick" value="--svg-pink" style="background-color: var(--main-pink);")
                             
 
-            div(class="row mx-1 mt-3")
+            div(class="row mx-1 mt-4")
                 div(id="canvas-outer" class="col mb-3 py-1 center")
                     canvas(id="canvas" class="center-y p-2" width="1024px")
                 div(class="mb-3 col-xl-5 col-lg-6 col-sm-12 col-xs-12 px-0")
@@ -156,10 +156,10 @@ html
                                 div(class="d-flex justify-content-between col-3")
                                     span(class="register-label") VF: 
                                     span(id="VF_val" class="register") 0
-                            div(class="pt-1 d-flex")
-                                button(value="2" class="base-btn" style="border-radius: 40% 0% 0% 40%;") 2
-                                button(value="10" class="base-btn selected") 10
-                                button(value="16" class="base-btn" style="border-radius: 0% 40% 40% 0%;") 16
+                            div(class="mt-3 pt-1 d-flex")
+                                button(value="2" class="base-btn selected" style="border-right: 0px; border-radius: 2% 0% 0% 2%;") BIN
+                                button(value="10" class="base-btn" style="") DEC
+                                button(value="16" class="base-btn" style="border-left: 0px; border-radius: 0% 2% 2% 0%;") HEX
                         div(class="col-sm-9 col-xs-12 tab-content debug" id="tab2-content")
                             p(id="log")
                         div(class="col-sm-9 col-xs-12 tab-content flex-row align-items-center justify-content-evenly overflow-hidden" id="tab3-content")
@@ -186,14 +186,14 @@ html
                                     button(id="key-v" class="key emu-btn" value="v") F
 
                         div(id="tab-btns" class="btn-group-vertical justify-content-between d-flex align-items-stretch col-sm-3 col-xs-12") 
-                            button(id="tab1" class="h-100 debug btn-block selected")
-                                svg(id="register-svg" ixmlns="http://www.w3.org/2000/svg"  viewBox="0 0 320 512")
-                                    path(style="fill: white" d="M160 0c17.7 0 32 14.3 32 32V67.7c1.6 .2 3.1 .4 4.7 .7c.4 .1 .7 .1 1.1 .2l48 8.8c17.4 3.2 28.9 19.9 25.7 37.2s-19.9 28.9-37.2 25.7l-47.5-8.7c-31.3-4.6-58.9-1.5-78.3 6.2s-27.2 18.3-29 28.1c-2 10.7-.5 16.7 1.2 20.4c1.8 3.9 5.5 8.3 12.8 13.2c16.3 10.7 41.3 17.7 73.7 26.3l2.9 .8c28.6 7.6 63.6 16.8 89.6 33.8c14.2 9.3 27.6 21.9 35.9 39.5c8.5 17.9 10.3 37.9 6.4 59.2c-6.9 38-33.1 63.4-65.6 76.7c-13.7 5.6-28.6 9.2-44.4 11V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V445.1c-.4-.1-.9-.1-1.3-.2l-.2 0 0 0c-24.4-3.8-64.5-14.3-91.5-26.3c-16.1-7.2-23.4-26.1-16.2-42.2s26.1-23.4 42.2-16.2c20.9 9.3 55.3 18.5 75.2 21.6c31.9 4.7 58.2 2 76-5.3c16.9-6.9 24.6-16.9 26.8-28.9c1.9-10.6 .4-16.7-1.3-20.4c-1.9-4-5.6-8.4-13-13.3c-16.4-10.7-41.5-17.7-74-26.3l-2.8-.7 0 0C119.4 279.3 84.4 270 58.4 253c-14.2-9.3-27.5-22-35.8-39.6c-8.4-17.9-10.1-37.9-6.1-59.2C23.7 116 52.3 91.2 84.8 78.3c13.3-5.3 27.9-8.9 43.2-11V32c0-17.7 14.3-32 32-32z")
+                            button(id="tab1" class="h-100 w-100 my-0 debug btn-block selected")
+                                svg(id="cpu-svg" ixmlns="http://www.w3.org/2000/svg"  viewBox="145.5 162.5 21 21")
+                                    path(style="fill: white" d="M153,170h-4v6h4v-1h-3v-4h3v-1Zm2,6v-2h3v-4h-4v6h1Zm2-5v2h-2v-2h2Zm2-1v6h4v-6h-1v5h-2v-5h-1Zm4-5v1h1v2h2v1h-2v2h2v1h-2v2h2v1h-2v2h2v1h-2v2h-1v1h-2v2h-1v-2h-2v2h-1v-2h-2v2h-1v-2h-2v2h-1v-2h-2v-1h-1v-2h-2v-1h2v-2h-2v-1h2v-2h-2v-1h2v-5h1v-1h2v-2h1v2h2v-2h1v2h2v-2h1v2h2v-2h1v2h2Zm-17,3v1h2v-1h-2Z")
 
-                            button(id="tab2" class="h-100 debug btn-block")
-                                svg(id="settings-svg" ixmlns="http://www.w3.org/2000/svg"   viewBox="0 0 448 512")
-                                    path(style="fill: white" d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z")
+                            button(id="tab2" class="h-100 w-100 my-0 debug btn-block")
+                                svg(id="log-svg" ixmlns="http://www.w3.org/2000/svg" viewBox="146.5 141.5 21 21")
+                                    path(style="fill: white"  d="M150,159v-1h-1v-12h1v-1h1v-1h12v1h1v10h-1v2h1v2h-1v1h-12v-1h-1Zm2-4v1h1v1h8v-2h-9Zm9-7h-8v1h8v-1Zm0,2h-8v1h8v-1Z")
 
-                            button(id="tab3" class="h-100 btn-block ")
-                                svg(id="settings-svg" ixmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512")
-                                    path(style="fill: white" d="M192 64C86 64 0 150 0 256S86 448 192 448H448c106 0 192-86 192-192s-86-192-192-192H192zM496 168a40 40 0 1 1 0 80 40 40 0 1 1 0-80zM392 304a40 40 0 1 1 80 0 40 40 0 1 1 -80 0zM168 200c0-13.3 10.7-24 24-24s24 10.7 24 24v32h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H216v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h32V200z")
+                            button(id="tab3" class="h-100 w-100 my-0 btn-block ")
+                                svg(id="gamepad-svg" ixmlns="http://www.w3.org/2000/svg" viewBox="146.5 169 15 15")
+                                    path(style="fill: white" d="M150,181h-4v-1h-1v-6h1v-1h1v-1h5v-1h4v1h5v1h1v1h1v6h-1v1h-4v-1h-8v1Zm-2-6h-1v1h1v1h1v-1h1v-1h-1v-1h-1v1Zm4,0v1h2v-1h-2Zm3,0v1h1v-1h-1Zm6,1h1v-1h-1v1Zm-2-2v1h1v-1h-1Zm0,2h-1v1h1v-1Zm1,2h1v-1h-1v1Z")

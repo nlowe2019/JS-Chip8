@@ -1,5 +1,5 @@
 let log = []
-let reg_base = 10;
+let reg_base = 2;
 export let debug = true
 export let settings_open = false;
 
