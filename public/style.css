@@ -518,6 +518,15 @@ span {
     }
 }
 
+#mobile-roms-parent {
+    
+}
+@media (min-width:576px) {
+    
+    #mobile-roms-parent {
+        display: none !important;
+    }
+}
 
 @media (max-width:576px) {
     

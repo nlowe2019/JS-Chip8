@@ -29,7 +29,7 @@ html
         div(class="container-fluid main mt-4 py-1")
             div(class="row w-100 mx-0 my-1")
                 div(id="roms-parent" class="col d-flex justify-content-start")
-                    select(name="roms" id="roms" class="decorated h-100" style="max-width: 300px;")
+                    select(name="roms" id="roms" class="decorated h-100" style="max-width: 360px;")
                         option(value="" selected disabled hidden) Select ROM
                         each rom in roms
                             option(class="opt" value=rom)=rom
@@ -52,10 +52,10 @@ html
                     div(id="settings-ui" class="px-4 py-3 invisible")
                         div(class="col-auto")
                             h6() SPEED
-                            input(class="h-100" type="range" min="1" max="30" value="10" class="slider" id="game-speed")
+                            input(id='speed-slider' class="h-100" type="range" min="1" max="30" value="10" class="slider")
                         div(class="col-auto mt-2")
                             h6() AUDIO
-                            input(class="h-100" type="range" min="1" max="100" value="50" class="slider" id="game-volume")
+                            input(id='volume-slider' class="h-100" type="range" min="1" max="100" value="50" class="slider")
                         div(class="col-auto mt-2")
                             div(class="btn-group w-100 my-2 justify-content-evenly" role="group" aria-label="Basic example")
                                 button(id="render-style" class="container-fluid selected")
@@ -82,6 +82,8 @@ html
             div(class="row mx-1 mt-4")
                 div(id="canvas-outer" class="col mb-3 py-1 center")
                     canvas(id="canvas" class="center-y p-2" width="1024px")
+                div(id="mobile-roms-parent" class="d-flex col-xs-12 justify-content-center")
+                
                 div(class="mb-3 col-xl-5 col-lg-6 col-sm-12 col-xs-12 px-0")
                     div(class="tabs h-100  px-1 row")
                         div(class="col-sm-9 col-xs-12 tab-content debug justify-content-evenly overflow-auto" id="tab1-content")

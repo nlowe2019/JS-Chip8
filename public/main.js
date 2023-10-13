@@ -99,7 +99,7 @@ $(function() {
         display.frame_buffer_second.fill(false)
         fetchRom('/' + rom + '.ch8', halt_on_load)
     })
-    $('input[type=range]').on('input', function () {
+    $('#speed-slider').on('input', function () {
         IPF = $(this).val()
     })
     $(".color-pick").click(function () {
@@ -152,18 +152,26 @@ $(window).resize(function() {
     if ($(window).width() >= 576) {
         $('#tab-btns').removeClass('btn-group');
         $('#tab-btns').addClass('btn-group-vertical');
+        $('#roms-parent').append($('#roms'));
+        $('#roms-parent').append($('#restart'));
     } else {
         $('#tab-btns').addClass('btn-group');
         $('#tab-btns').removeClass('btn-group-vertical');
+        $('#mobile-roms-parent').append($('#roms'));
+        $('#mobile-roms-parent').append($('#restart'));
     }
 })
 $(document).ready(function() {
     if ($(window).width() >= 576) {
         $('#tab-btns').removeClass('btn-group');
         $('#tab-btns').addClass('btn-group-vertical');
+        $('#roms-parent').append($('#roms'));
+        $('#roms-parent').append($('#restart'));
     } else {
         $('#tab-btns').addClass('btn-group');
         $('#tab-btns').removeClass('btn-group-vertical');
+        $('#mobile-roms-parent').append($('#roms'));
+        $('#mobile-roms-parent').append($('#restart'));
     }
     $(window).resize(resizeTabs)
 
