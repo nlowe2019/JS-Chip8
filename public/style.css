@@ -511,8 +511,11 @@ span {
     float: right;
     justify-content: right;
 }
-@media (min-width:576px) {
+@media (min-width:976px) {
     
+    .keypad-shift-right {
+        margin-left: 72px !important;
+    }
 }
 
 
@@ -522,4 +525,3 @@ span {
         margin-left: 8px !important;
     }
 }
-

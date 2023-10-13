@@ -15,6 +15,9 @@ $("#debug").click(function() {
         $("#tab3").addClass("selected")
         $("#tab3-content").addClass("selected")
 
+        $("#tab-btns").addClass("d-none")
+        $(".key-row").addClass("keypad-shift-right")
+
         $(".btn-block.debug").addClass("inactive")
     } else {
         $(".btn-block.debug").removeClass("inactive")
@@ -24,6 +27,9 @@ $("#debug").click(function() {
         $("div.tabs div.tab-content").removeClass("selected")
         $("#tab1").addClass("selected")
         $("#tab1-content").addClass("selected")
+        
+        $("#tab-btns").removeClass("d-none")
+        $(".key-row").removeClass("keypad-shift-right")
     }
 })
 

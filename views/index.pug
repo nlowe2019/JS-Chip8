@@ -84,7 +84,7 @@ html
                     canvas(id="canvas" class="center-y p-2" width="1024px")
                 div(class="mb-3 col-xl-5 col-lg-6 col-sm-12 col-xs-12 px-0")
                     div(class="tabs h-100  px-1 row")
-                        div(class="col-sm-9 col-xs-12 tab-content debug selected justify-content-evenly overflow-auto" id="tab1-content")
+                        div(class="col-sm-9 col-xs-12 tab-content debug justify-content-evenly overflow-auto" id="tab1-content")
                             div(class="d-flex justify-content-between register-row")
                                 div(class="d-flex justify-content-between col-3") 
                                     span(class="register-label") V0: 
@@ -165,7 +165,7 @@ html
                                 button(value="16" class="base-btn" style="border-left: 0px; border-radius: 0% 2% 2% 0%;") HEX
                         div(class="col-sm-9 col-xs-12 tab-content debug" id="tab2-content")
                             p(id="log")
-                        div(class="col-sm-9 col-xs-12 tab-content flex-row align-items-center justify-content-evenly overflow-hidden" id="tab3-content")
+                        div(class="col-sm-9 col-xs-12 tab-content flex-row align-items-center justify-content-evenly overflow-hidden selected" id="tab3-content")
                             div(id="keypad" class="justify-content-between" style="")
                                 div(class="d-flex key-row")
                                     button(id="key-1" class="key emu-btn" value="1") 1
@@ -189,7 +189,7 @@ html
                                     button(id="key-v" class="key emu-btn" value="v") F
 
                         div(id="tab-btns" class="btn-group-vertical justify-content-between d-flex align-items-stretch col-sm-3 col-xs-12") 
-                            button(id="tab1" class="h-100 w-100 my-0 debug btn-block selected")
+                            button(id="tab1" class="h-100 w-100 my-0 debug btn-block ")
                                 svg(id="cpu-svg" ixmlns="http://www.w3.org/2000/svg"  viewBox="145.5 162.5 21 21")
                                     path(style="fill: white" d="M153,170h-4v6h4v-1h-3v-4h3v-1Zm2,6v-2h3v-4h-4v6h1Zm2-5v2h-2v-2h2Zm2-1v6h4v-6h-1v5h-2v-5h-1Zm4-5v1h1v2h2v1h-2v2h2v1h-2v2h2v1h-2v2h2v1h-2v2h-1v1h-2v2h-1v-2h-2v2h-1v-2h-2v2h-1v-2h-2v2h-1v-2h-2v-1h-1v-2h-2v-1h2v-2h-2v-1h2v-2h-2v-1h2v-5h1v-1h2v-2h1v2h2v-2h1v2h2v-2h1v2h2v-2h1v2h2Zm-17,3v1h2v-1h-2Z")
 
@@ -197,6 +197,6 @@ html
                                 svg(id="log-svg" ixmlns="http://www.w3.org/2000/svg" viewBox="146.5 141.5 21 21")
                                     path(style="fill: white"  d="M150,159v-1h-1v-12h1v-1h1v-1h12v1h1v10h-1v2h1v2h-1v1h-12v-1h-1Zm2-4v1h1v1h8v-2h-9Zm9-7h-8v1h8v-1Zm0,2h-8v1h8v-1Z")
 
-                            button(id="tab3" class="h-100 w-100 my-0 btn-block ")
+                            button(id="tab3" class="h-100 w-100 my-0 btn-block selected")
                                 svg(id="gamepad-svg" ixmlns="http://www.w3.org/2000/svg" viewBox="146.5 169 15 15")
                                     path(style="fill: white" d="M150,181h-4v-1h-1v-6h1v-1h1v-1h5v-1h4v1h5v1h1v1h1v6h-1v1h-4v-1h-8v1Zm-2-6h-1v1h1v1h1v-1h1v-1h-1v-1h-1v1Zm4,0v1h2v-1h-2Zm3,0v1h1v-1h-1Zm6,1h1v-1h-1v1Zm-2-2v1h1v-1h-1Zm0,2h-1v1h1v-1Zm1,2h1v-1h-1v1Z")

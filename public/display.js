@@ -16,6 +16,7 @@ export class Display {
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height)
         for(let i = 0; i < this.frame_buffer_main.length; i++) {
             if (this.frame_buffer_main[i] || this.frame_buffer_second[i] ) {
+                
                 this.ctx.fillStyle = this.pixel_color
                 if(this.render_style == 'grid')
                     this.ctx.fillRect((i%64 * this.pixel_size) + 1, (Math.floor(i/64) * this.pixel_size) + 1, this.pixel_size - 2, this.pixel_size - 2)
