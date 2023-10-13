@@ -513,17 +513,13 @@ span {
 }
 @media (min-width:576px) {
     
-    .top-bar-right {
-        margin-right: 16px;
-    }
 }
 
 
 @media (max-width:576px) {
     
-    .top {
-        margin-left: 2px !important;
-        margin-right: 2px !important;
+    .top-btn {
+        margin-left: 8px !important;
     }
 }
 

@@ -37,7 +37,7 @@ const fetchRom = async (romName, halt_on_load) => {
             let buffer = await response.arrayBuffer();
             loadRom(new Uint8Array(buffer), halt_on_load)
         } else {
-            alert("Error: " + response.status)
+            alert("Error: " + response.status + ": Failed to fetch ROM File")
         }
     } catch (error) {
         console.log(error);
@@ -90,6 +90,15 @@ $(function() {
             loop(1)
         }
     })
+    $("#restart").click(function () {
+        let rom =  document.getElementById("roms").value 
+        let halt_on_load = halt
+        if(!halt)
+            setHalt()
+        display.frame_buffer_main.fill(false)
+        display.frame_buffer_second.fill(false)
+        fetchRom('/' + rom + '.ch8', halt_on_load)
+    })
     $('input[type=range]').on('input', function () {
         IPF = $(this).val()
     })
@@ -103,7 +112,7 @@ $(function() {
         let svg_color = $(this).attr('value')
         let svg_var_name = '--svg-default'
         document.documentElement.style.setProperty(svg_var_name, 'var(' + svg_color + ')')
-        
+        display.show()
     })
     $("#render-style").click(function () {
 
@@ -117,6 +126,7 @@ $(function() {
             style = 'solid'
         }
         display.render_style = style
+        display.show()
     })
     
         resizeTabs()

@@ -4,7 +4,10 @@
     "pug": "^3.0.2"
   },
   "scripts": {
-    "start": "node app.js" ,
-    "build": ""  
+    "start": "node app.js",
+    "build": ""
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.4.10"
   }
 }
