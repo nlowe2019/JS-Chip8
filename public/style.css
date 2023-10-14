@@ -136,7 +136,7 @@ button {
     }
 }
 
-#roms {
+.rom-select {
     font-weight: 200;
     font-size: x-large;
     font-family: font-primary, 'Courier New', Courier, monospace,  Helvetica !important;

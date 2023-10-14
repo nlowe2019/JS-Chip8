@@ -31,7 +31,7 @@ html
             div(class="row w-100 mx-0 my-1")
                 
                 div(id="roms-parent" class="col d-flex justify-content-start")
-                    select(name="roms" id="roms" class="decorated h-100" style="max-width: 360px;")
+                    select(name="roms" id="roms" class=" rom-select decorated h-100" style="max-width: 360px;")
                         option(value="" selected disabled hidden) Select ROM
                         each rom in roms
                             option(class="opt" value=rom)=rom
@@ -96,7 +96,7 @@ html
 
 
                         div(class="col-12 mt-4 d-flex justify-content-center")
-                            select(name="roms" id="roms" class="disabled decorated" style="max-width: 360px;")
+                            select(name="roms" id="" class="rom-select disabled decorated" style="max-width: 360px;")
                                 option(value="" selected disabled hidden) Select ROM
                         div(class="col-12 mt-3 mb-1 d-flex justify-content-center")
                             h6(class="text-center") Load Game
