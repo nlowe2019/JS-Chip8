@@ -300,25 +300,31 @@ const VXxorVY = (cpu, x, y) => {
 //8xy4
 const VXplusVY = (cpu, x, y) => {
     // activate VF flag if result > 255
-    cpu.registers[0xf] = (cpu.registers[x] + cpu.registers[y] > 255) ? 1 : 0
+    let reg_y = cpu.registers[y]
+    let reg_x = cpu.registers[x]
     
-    cpu.registers[x] += cpu.registers[y]
+    cpu.registers[x] += reg_y
+    cpu.registers[0xf] = (reg_x + reg_y > 255) ? 1 : 0
     return '8xy4 - ADD'
 }
 //8xy5
 const VXsubVY = (cpu, x, y) => { 
     // activate VF flag if VX > VY
-    cpu.registers[0xf] = (cpu.registers[x] > cpu.registers[y]) ? 1 : 0
+    let reg_y = cpu.registers[y]
+    let reg_x = cpu.registers[x]
     
-    cpu.registers[x] = cpu.registers[x] - cpu.registers[y]
+    cpu.registers[x] -= reg_y
+    cpu.registers[0xf] = (reg_x > reg_y) ? 1 : 0
     return '8xy5 - SUB'
 }
 //8xy7
 const VYsubVX = (cpu, x, y) => {
     // activate VF flag if VY > VX
-    cpu.registers[0xf] = (cpu.registers[y] > cpu.registers[x]) ? 1 : 0
+    let reg_y = cpu.registers[y]
+    let reg_x = cpu.registers[x]
     
-    cpu.registers[x] = cpu.registers[y] - cpu.registers[x]
+    cpu.registers[x] = reg_y - reg_x
+    cpu.registers[0xf] = (reg_y > reg_x) ? 1 : 0
     return '8xy7 - SUBN'
 }
 //8xy6
@@ -326,8 +332,9 @@ export const VXshiftR = (cpu, x, y) => {
     if(!cpu.cosmac) {
         y = x
     }
-    cpu.registers[0xf] = cpu.registers[y] & 0x1
-    cpu.registers[x] = cpu.registers[y] >>> 1
+    let reg_y = cpu.registers[y]
+    cpu.registers[x] = reg_y >>> 1
+    cpu.registers[0xf] = reg_y & 0x1
     return '8xy6 - SHR'
 }
 //8xyE
@@ -335,8 +342,9 @@ export const VXshiftL = (cpu, x, y) => {
     if(!cpu.cosmac) {
         y = x
     }
-    cpu.registers[0xf] = (cpu.registers[y] >> 7) & 0x1
-    cpu.registers[x] = cpu.registers[y] << 1
+    let reg_y = cpu.registers[y]
+    cpu.registers[x] = reg_y << 1
+    cpu.registers[0xf] = (reg_y >> 7) & 0x1
     return '8xyE - SHL'
 }
 //9xy0
