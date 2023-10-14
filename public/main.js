@@ -2,11 +2,14 @@ import { debug, settings_open, updateLog, updateLogDOM, updateRegisters, openSet
 import { CPU, getInstruction, decodeInstruction } from './CHIP8.js';
 import { halt, setHalt } from './input.js';
 import { Display } from './display.js'
+import { configure_sound } from './sound.js'
+
+let info_open = false;
 
 let display = new Display(document.getElementById("canvas"))
 let FPS = 60
-let IPF = 10
-let cpu
+let IPF = 12
+export let cpu
 
 const loop = function (n) {
 
@@ -63,12 +66,15 @@ rom_select.addEventListener('change', (event) => {
     display.frame_buffer_main.fill(false)
     display.frame_buffer_second.fill(false)
     fetchRom('/' + rom + '.ch8', halt_on_load)
+    $('#restart').removeClass('inactive')
 })
 
 $(function() {
-    $("#settings").click(function () {
-        console.log("settings")
-        openSettings()
+    $("#settings").click(function () { 
+        openSettings(!settings_open)
+        $('#info').removeClass('selected')
+        $('#info-ui').addClass('invisible') 
+        info_open = false
         if(settings_open)
         {
             $('#settings').addClass('selected') 
@@ -80,8 +86,23 @@ $(function() {
             $('#settings-ui').addClass('invisible') 
         }
     })
+    $("#info").click(function () { 
+        $('#settings').removeClass('selected')
+        $('#settings-ui').addClass('invisible')
+        openSettings(false)
+        info_open = !info_open 
+        if(info_open)
+        {
+            $('#info').addClass('selected') 
+            $('#info-ui').removeClass('invisible') 
+        }
+        else
+        {
+            $('#info').removeClass('selected')
+            $('#info-ui').addClass('invisible') 
+        }
+    })
     $("#pause").click(function () {
-        console.log("pause")
         setHalt();
         halt ? $('#pause').addClass('selected') : $('#pause').removeClass('selected')
     })
@@ -91,17 +112,24 @@ $(function() {
         }
     })
     $("#restart").click(function () {
-        let rom =  document.getElementById("roms").value 
-        let halt_on_load = halt
-        if(!halt)
-            setHalt()
-        display.frame_buffer_main.fill(false)
-        display.frame_buffer_second.fill(false)
-        fetchRom('/' + rom + '.ch8', halt_on_load)
+        if(!($('#restart').hasClass('inactive')))
+        {
+            let rom =  document.getElementById("roms").value
+            let halt_on_load = halt
+            if(!halt)
+                setHalt()
+            display.frame_buffer_main.fill(false)
+            display.frame_buffer_second.fill(false)
+            fetchRom('/' + rom + '.ch8', halt_on_load)
+        }
     })
     $('#speed-slider').on('input', function () {
         IPF = $(this).val()
     })
+    $('#volume-slider').on('input', function () {
+        configure_sound($(this).val())
+    })
+    
     $(".color-pick").click(function () {
         let main_color_name = '--main-color'
         let selected_color = $(this).css('background-color')
@@ -161,7 +189,9 @@ $(window).resize(function() {
         $('#mobile-roms-parent').append($('#restart'));
     }
 })
-$(document).ready(function() {
+
+
+$(window).on('load', function() {
     if ($(window).width() >= 576) {
         $('#tab-btns').removeClass('btn-group');
         $('#tab-btns').addClass('btn-group-vertical');
@@ -172,9 +202,12 @@ $(document).ready(function() {
         $('#tab-btns').removeClass('btn-group-vertical');
         $('#mobile-roms-parent').append($('#roms'));
         $('#mobile-roms-parent').append($('#restart'));
+        $('#debug').trigger('click')
     }
     $(window).resize(resizeTabs)
+})
 
+$(window).ready(function() {
         
     fetchRom('/CHIP-8 Logo.ch8')
     setInterval(() => {

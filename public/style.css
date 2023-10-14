@@ -407,12 +407,16 @@ span {
     outline: none;
 }
 
+.disabled {
+    pointer-events: none;
+    transition: 0s !important;
+}
+
 #settings-ui {
     z-index: 5;
     position: absolute; 
-    right: 64px;
-    top: 20px; 
-    background-color: #fff; 
+    right: 1vw;
+    top: 52px;
     height: 350px; 
     width: 240px;
     border-radius: 1px;
@@ -421,6 +425,28 @@ span {
     border-style: solid;
     background-color: #040404;
 }
+#info-ui {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    z-index: 5;
+    position: absolute; 
+    right: 16vw;
+    top: 52px; 
+    height: 350px; 
+    width: 260px;
+    border-radius: 1px;
+    border-color: var(--main-color);
+    border-width: 6px;
+    border-style: solid;
+    background-color: #040404;
+}
+
+h6 {
+    font-family: font-primary, 'Courier New', Courier, monospace,  Helvetica !important;
+    font-weight: 100;
+    font-size: medium;
+}
+
 
 .color-pick {
     width: 24px;
@@ -518,9 +544,6 @@ span {
     }
 }
 
-#mobile-roms-parent {
-    
-}
 @media (min-width:576px) {
     
     #mobile-roms-parent {
@@ -530,7 +553,22 @@ span {
 
 @media (max-width:576px) {
     
+    #roms-parent {
+        display: none !important;
+    }
+}
+
+@media (max-width:576px) {
+    
+    .top-bar-right { 
+
+    }
+
+    #info { 
+    }
+
     .top-btn {
         margin-left: 8px !important;
+        margin-right: 12px !important;
     }
 }

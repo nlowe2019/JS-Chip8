@@ -4,15 +4,19 @@ let gainNode
 
 const type = "square"
 let frequency = 200 // Hz
-let volume = 0.01
+let volume = 0.015
 
 const initialiser = '#roms'
 
-const configure_sound = () => {
+export const configure_sound = (vol = 40) => {
     // set parameters
-    gainNode.gain.value = volume;
-    oscillator.frequency.value = frequency;
-    oscillator.type = type;
+    if(audio_ctx) {
+        vol = vol/2000;
+        volume = vol
+        gainNode.gain.value = volume;
+        oscillator.frequency.value = frequency;
+        oscillator.type = type;
+    }
 }
 
 export const play_sound = (duration) => {
@@ -32,7 +36,7 @@ $(initialiser).click(() => {
         audio_ctx = new(window.AudioContext || window.webkitAudioContext)()
         gainNode = audio_ctx.createGain();
         oscillator = audio_ctx.createOscillator();
-        configure_sound()
+        configure_sound(40)
     
         gainNode.connect(audio_ctx.destination);
 

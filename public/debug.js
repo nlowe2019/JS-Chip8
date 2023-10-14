@@ -1,3 +1,5 @@
+import { cpu } from './main.js'
+
 let log = []
 let reg_base = 2;
 export let debug = true
@@ -38,6 +40,22 @@ $(".base-btn").click(function() {
     $(".base-btn").removeClass("selected")
     $(this).addClass("selected")
     reg_base == 2 ? $(".register").addClass("fs-xs") : $(".register").removeClass("fs-xs")
+
+    let registers = cpu.registers
+
+    for(let i=0; i<registers.length; i++) {
+        try{
+            if(reg_base == 2)
+                document.getElementById(`V${i.toString(16).toUpperCase()}_val`).innerHTML = registers[i].toString(reg_base).padStart(8, '0')
+            else if(reg_base == 16)
+                document.getElementById(`V${i.toString(16).toUpperCase()}_val`).innerHTML = ('00' + registers[i].toString(reg_base)).substr(-2)
+            else
+                document.getElementById(`V${i.toString(16).toUpperCase()}_val`).innerHTML = registers[i].toString(reg_base);
+        } catch (err) {
+            console.log(`V${i.toString(16)}`)
+            console.log(err)
+        }
+    }
 })
 
 export const updateRegisters = (registers, pc, I, delay, sound, op) => {
@@ -84,6 +102,6 @@ export const updateLogDOM = () => {
     }
 }
 
-export const openSettings = () => {
-    settings_open = !settings_open;
+export const openSettings = (bool) => {
+    settings_open = bool;
 }

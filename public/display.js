@@ -14,20 +14,24 @@ export class Display {
     // i%64 === x coord
     show = function () {
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height)
-        for(let i = 0; i < this.frame_buffer_main.length; i++) {
-            if (this.frame_buffer_main[i] || this.frame_buffer_second[i] ) {
-                
+        if(this.render_style == 'solid')
+        {
+            this.ctx.fillStyle = "#000"
+            this.ctx.fillRect(0, 0, this.pixel_size*64, this.pixel_size*64)
+        }
+
+        for(let i = 0; i < this.frame_buffer_main.length; i++) 
+        {
+            if (this.frame_buffer_main[i] || this.frame_buffer_second[i]) 
+            {
                 this.ctx.fillStyle = this.pixel_color
                 if(this.render_style == 'grid')
                     this.ctx.fillRect((i%64 * this.pixel_size) + 1, (Math.floor(i/64) * this.pixel_size) + 1, this.pixel_size - 2, this.pixel_size - 2)
                 else if(this.render_style == 'solid')
                     this.ctx.fillRect((i%64 * this.pixel_size), (Math.floor(i/64) * this.pixel_size), this.pixel_size, this.pixel_size)
-            } else {
-                if(((i%64)%2) === ((Math.floor(i/64))%2)){
-                    //ctx.fillStyle = "#000"
-                } else {
-                    //ctx.fillStyle = "#121212"
-                }
+            } 
+            else if(this.render_style == 'grid') 
+            {
                 this.ctx.fillStyle = "#000"
                 if(this.render_style == 'grid')
                     this.ctx.fillRect((i%64 * this.pixel_size)+1, (Math.floor(i/64) * this.pixel_size) +1, this.pixel_size-2, this.pixel_size-2)
